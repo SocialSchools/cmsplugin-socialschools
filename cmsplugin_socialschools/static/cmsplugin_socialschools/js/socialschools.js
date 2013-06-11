@@ -4,29 +4,30 @@
         return;
     }
 
+    function cloneToObject(obj) {
+        var attr;
+        for (attr in obj) {
+            if (obj.hasOwnProperty(attr)) {
+                this[attr] = obj[attr];
+            }
+        }
+    }
+
     function Socialschools(baseUrl) {
         this.baseUrl = baseUrl + 'apiv1/';
     }
 
     function Post(obj) {
-        for(var attr in obj) {
-            if(obj.hasOwnProperty(attr)) {
-                this[attr] = obj[attr];
-            }
-        }
+        cloneToObject.call(this, obj);
     }
 
     function Comment(obj) {
-        for(var attr in obj) {
-            if(obj.hasOwnProperty(attr)) {
-                this[attr] = obj[attr];
-            }
-        }
+        cloneToObject.call(this, obj);
     }
 
-    Post.prototype.getComments = function(callback) {
-        return Socialschools.prototype.getCommentsFromUrl(this.comments, callback)
-    }
+    Post.prototype.getComments = function (callback) {
+        return Socialschools.prototype.getCommentsFromUrl(this.comments, callback);
+    };
 
     function PostsCollection() {
         this.posts = [];
