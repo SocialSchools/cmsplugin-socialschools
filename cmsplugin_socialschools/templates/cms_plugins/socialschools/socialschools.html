@@ -1,0 +1,33 @@
+{% load staticfiles %}
+{% load sekizai_tags %}
+
+{% addtoblock 'js' %}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script src="{% static 'cmsplugin_socialschools/js/socialschools.js' %}"></script>
+<script src="{% static 'cmsplugin_socialschools/js/lib/underscore-min.js' %}"></script>
+<script id="post-template" type="text/x-handlebars-template">
+    {% autoescape off %}
+        {{ instance.template }}
+    {% endautoescape %}
+</script>
+<script type="text/javascript">
+    var postTemplate = _.template($('#post-template').html());
+    var socialschools = new Socialschools('{{ instance.socialschools_url }}');
+    var renderPosts = function(posts) {
+        _.each(posts, function(post) {
+            var postHtml = postTemplate(post)
+            var $post = $(document.createElement('div'));
+            $post.html(postHtml)
+            $('{{ instance.content_selector }}').append($post);
+        });
+    }
+    var posts = socialschools.getPublicPosts({{ instance.community_id }}, renderPosts);
+    $(function() {
+        $('{{ instance.next_button_selector }}').on('click', function (e) {
+            e.preventDefault();
+            posts = posts.getNextPage(renderPosts)
+        });
+    })
+</script>
+
+{% endaddtoblock %}
