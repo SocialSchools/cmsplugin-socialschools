@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '0.0.1'
+version = '0.0.2'
 
 setup(
     name='cmsplugin-socialschools',
@@ -11,8 +11,5 @@ setup(
     packages=find_packages(),
     zip_safe=False,
     include_package_data=True,
-    install_requires=[
-        'Django>=1.2',
-        'django-cms',
-    ],
+    install_requires=[],
 )
