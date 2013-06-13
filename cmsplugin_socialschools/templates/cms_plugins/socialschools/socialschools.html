@@ -19,7 +19,13 @@
             $('#cms-instance-{{ instance.id }}').find('.css-posts-content').append($post);
         });
     }
-    var posts = socialschools.getPublicPosts({{ instance.community_id }}, renderPosts);
+var posts = socialschools.getPublicPosts({{ instance.community_id }}, {
+    {% if instance.only_descendants %}
+        only_descendants: true
+    {% else %}
+        only_descendants: false
+    {% endif %}
+    }, renderPosts);
     $(function() {
         $('#cms-instance-{{ instance.id }}').find('#css-posts-add-more').on('click', function (e) {
             e.preventDefault();

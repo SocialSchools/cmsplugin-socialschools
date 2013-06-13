@@ -49,11 +49,12 @@
         }
     }
 
-    Socialschools.prototype.getPublicPostsFromUrl = function (url, callback) {
+    Socialschools.prototype.getPublicPostsFromUrl = function (url, options, callback) {
         var ret = new PostsCollection();
         ret.ajax = $.ajax({
             dataType: 'jsonp',
             url: url,
+            data: options,
             success: function (data) {
                 ret.addPosts(data.results);
                 ret.nextUrl = data.next;
@@ -64,11 +65,12 @@
         return ret;
     };
 
-    Socialschools.prototype.getCommentsFromUrl = function (url, callback) {
+    Socialschools.prototype.getCommentsFromUrl = function (url, options, callback) {
         var ret = new CommentsCollection();
         ret.ajax = $.ajax({
             dataType: 'jsonp',
             url: url,
+            data: options,
             success: function (data) {
                 ret.addComments(data.results);
                 callback(ret.comments);
@@ -77,9 +79,9 @@
         return ret;
     };
 
-    Socialschools.prototype.getPublicPosts = function (communityId, callback) {
+    Socialschools.prototype.getPublicPosts = function (communityId, options, callback) {
         var url = this.baseUrl + 'public/' + communityId + '/post/';
-        return this.getPublicPostsFromUrl(url, callback);
+        return this.getPublicPostsFromUrl(url, options, callback);
     };
 
     PostsCollection.prototype.addPosts = function (posts) {
