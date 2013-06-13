@@ -6,9 +6,7 @@
 <script src="{% static 'cmsplugin_socialschools/js/socialschools.js' %}"></script>
 <script src="{% static 'cmsplugin_socialschools/js/lib/underscore-min.js' %}"></script>
 <script id="post-template" type="text/x-handlebars-template">
-    {% autoescape off %}
-        {{ instance.template }}
-    {% endautoescape %}
+    {% include "cms_plugins/socialschools/post.html" %}
 </script>
 <script type="text/javascript">
     var postTemplate = _.template($('#post-template').html());
@@ -18,12 +16,12 @@
             var postHtml = postTemplate(post)
             var $post = $(document.createElement('div'));
             $post.html(postHtml)
-            $('{{ instance.content_selector }}').append($post);
+            $('#cms-instance-{{ instance.id }}').find('.css-posts-content').append($post);
         });
     }
     var posts = socialschools.getPublicPosts({{ instance.community_id }}, renderPosts);
     $(function() {
-        $('{{ instance.next_button_selector }}').on('click', function (e) {
+        $('#cms-instance-{{ instance.id }}').find('#css-posts-add-more').on('click', function (e) {
             e.preventDefault();
             posts = posts.getNextPage(renderPosts)
         });
@@ -31,3 +29,9 @@
 </script>
 
 {% endaddtoblock %}
+
+<div id='cms-instance-{{ instance.id }}'>
+        <div class="css-posts-content">
+        </div>
+        <a class="css-posts-add-more" href="">more</a>
+</div>

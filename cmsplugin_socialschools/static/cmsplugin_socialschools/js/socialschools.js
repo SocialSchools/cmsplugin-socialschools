@@ -59,7 +59,7 @@
                 ret.nextUrl = data.next;
                 ret.prevUrl = data.previous;
                 callback(ret.posts);
-            }
+           }
         });
         return ret;
     };
