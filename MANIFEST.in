@@ -1,0 +1,4 @@
+include MANIFEST.in
+recursive-include cmsplugin_socialschools/templates *
+recursive-include cmsplugin_socialschools/static *
+recursive-exclude * *.pyc
