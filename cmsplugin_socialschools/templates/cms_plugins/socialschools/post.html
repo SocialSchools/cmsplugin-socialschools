@@ -1,10 +1,27 @@
+{% load i18n %}
+{% load staticfiles %}
+
 {% autoescape off %}
-<div class="post-block">
-    <h3><%= id %><%= title %></h3>
-    <div class="post-description">
-        <%= description %>
+<div class="post clearfix">
+    <div class="post-labels">
+        <div class="post-label-picture">
+            <img src="{% static 'css/img/unknown.png' %}">
+        </div>
     </div>
-    <div class="comments">
+
+    <!-- Post body -->
+    <div class="post-body">
+        <div class="post-message-container">
+            <h3 class="post-header"><%= title %></h3>
+            <span class="post-author"><a><%= posted_by.first_name %></a></span><span class="post-timestamp">post date here</span><span class="pull-right">{% trans 'Posted in' %}: <%= community %></span>
+            <div class="post-description">
+                <p><%= description %></p>
+            </div>
+            <div class="row-fluid">
+
+    <!-- Show Comments -->
+        <div class="post-comments-container">
+        </div>
     </div>
 </div>
 {% endautoescape %}
