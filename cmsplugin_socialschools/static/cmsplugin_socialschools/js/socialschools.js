@@ -56,9 +56,7 @@
             url: url,
             data: options,
             success: function (data) {
-                ret.addPosts(data.results);
-                ret.nextUrl = data.next;
-                ret.prevUrl = data.previous;
+                ret.addPosts(data);
                 callback(ret.posts);
            }
         });
@@ -84,10 +82,12 @@
         return this.getPublicPostsFromUrl(url, options, callback);
     };
 
-    PostsCollection.prototype.addPosts = function (posts) {
-        for(var post in posts) {
-            this.posts.push(new Post(posts[post]));
+    PostsCollection.prototype.addPosts = function (data) {
+        for(var post in data.results) {
+            this.posts.push(new Post(data.results[post]));
         }
+        this.nextUrl = data.next;
+        this.prevUrl = data.previous;
     }
 
     PostsCollection.prototype.getNextPage = function (callback) {
