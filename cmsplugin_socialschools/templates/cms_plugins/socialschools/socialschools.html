@@ -8,8 +8,12 @@
 <script id="post-template" type="text/x-handlebars-template">
     {% include "cms_plugins/socialschools/post.html" %}
 </script>
+<script id="comment-template" type="text/x-handlebars-template">
+    {% include "cms_plugins/socialschools/comment.html" %}
+</script>
 <script type="text/javascript">
     var postTemplate = _.template($('#post-template').html());
+    var commentTemplate = _.template($('#comment-template').html());
     var socialschools = new Socialschools('{{ instance.socialschools_url }}');
     var renderPosts = function(posts) {
         _.each(posts, function(post) {
@@ -17,6 +21,12 @@
             var $post = $(document.createElement('div'));
             $post.html(postHtml)
             $('#cms-instance-{{ instance.id }}').find('.css-posts-content').append($post);
+            post.getComments(function(comments) {
+                _.each(comments, function(comment) {
+                    var commentHtml = commentTemplate(comment)
+                    $post.find('.post-comments-container').append(commentHtml)
+                });
+            });
         });
     }
 var posts = socialschools.getPublicPosts({{ instance.community_id }}, {

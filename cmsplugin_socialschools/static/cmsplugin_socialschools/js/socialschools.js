@@ -30,7 +30,7 @@
     }
 
     Post.prototype.getComments = function (callback) {
-        return Socialschools.prototype.getCommentsFromUrl(this.comments, callback);
+        return Socialschools.prototype.getCommentsFromUrl(this.comments, {}, callback);
     };
 
     Post.prototype.getPhotos = function (callback) {
