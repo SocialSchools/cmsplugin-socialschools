@@ -56,9 +56,11 @@
     }
 
     CommentsCollection.prototype.addComments = function (comments) {
-        for(var comment in comments) {
-            this.comments.push(new Comment(comments[comment]));
+        for(var comment in comments.results) {
+            this.comments.push(new Comment(comments.results[comment]));
         }
+        this.nextUrl = comments.next;
+        this.prevUrl = comments.previous;
     }
 
     Socialschools.prototype.getPublicPostsFromUrl = function (url, options, callback) {
@@ -82,8 +84,8 @@
             url: url,
             data: options,
             success: function (data) {
-                ret.addComments(data.results);
-                callback(ret.comments);
+                ret.addComments(data);
+                callback(ret);
             }
         });
         return ret;
@@ -129,6 +131,13 @@
             return this;
         }
         return Socialschools.prototype.getPublicPostsFromUrl(this.nextUrl, {}, callback);
+    };
+
+    CommentsCollection.prototype.getNextPage = function (callback) {
+        if(!this.nextUrl) {
+            return this;
+        }
+        return Socialschools.prototype.getCommentsFromUrl(this.nextUrl, {}, callback);
     };
 
     PostsCollection.prototype.getPreviousPage = function (callback) {
