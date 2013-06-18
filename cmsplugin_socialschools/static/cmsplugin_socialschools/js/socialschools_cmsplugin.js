@@ -21,7 +21,7 @@ function renderComments($post, comments) {
 function renderPosts(selector, posts) {
     'use strict';
     $(selector).find('.css-posts-content').empty();
-    _.each(posts.posts, function (post) {
+    _.each(posts.objects, function (post) {
         var postHtml = postTemplate(post),
             $post = $(document.createElement('div'));
         $post.html(postHtml);

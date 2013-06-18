@@ -72,92 +72,21 @@
     var Photo = new Model();
 
     var CommentsCollection = new Collection(Comment)
+    var PostsCollection = new Collection(Post)
+    var PhotosCollection = new Collection(Photo)
 
     Post.prototype.getComments = function (callback) {
         return (new CommentsCollection()).getFromUrl(this.comments, undefined, callback)
     };
 
     Post.prototype.getPhotos = function (callback) {
-        return Socialschools.prototype.getPhotosFromUrl(this.photos, {}, callback);
-    };
-
-    function PostsCollection() {
-        this.posts = [];
-    }
-
-    function PhotoCollection() {
-        this.photos = [];
-    }
-
-    PostsCollection.prototype.addPosts = function (posts) {
-        for(var post in posts) {
-            this.posts.push(new Post(posts[post]));
-        }
-    }
-
-    Socialschools.prototype.getPublicPostsFromUrl = function (url, options, callback) {
-        var ret = new PostsCollection();
-        ret.ajax = $.ajax({
-            dataType: 'jsonp',
-            url: url,
-            data: options,
-            success: function (data) {
-                ret.addPosts(data);
-                callback(ret);
-           }
-        });
-        return ret;
-    };
-
-    Socialschools.prototype.getPhotosFromUrl = function (url, options, callback) {
-        var ret = new PhotoCollection();
-        ret.ajax = $.ajax({
-            dataType: 'jsonp',
-            url: url,
-            data: options,
-            success: function (data) {
-                ret.addPhotos(data);
-                callback(ret.photos);
-            }
-        });
-        return ret;
+        return (new PhotosCollection()).getFromUrl(this.photos, undefined, callback)
     };
 
     Socialschools.prototype.getPublicPosts = function (communityId, options, callback) {
         var url = this.baseUrl + 'public/' + communityId + '/post/';
-        return this.getPublicPostsFromUrl(url, options, callback);
+        return (new PostsCollection()).getFromUrl(url, options, callback)
     };
 
-    PostsCollection.prototype.addPosts = function (data) {
-        for(var post in data.results) {
-            this.posts.push(new Post(data.results[post]));
-        }
-        this.nextUrl = data.next;
-        this.prevUrl = data.previous;
-    }
-
-    PhotoCollection.prototype.addPhotos = function (data) {
-    }
-
-    PostsCollection.prototype.getNextPage = function (callback) {
-        if(!this.nextUrl) {
-            return this;
-        }
-        return Socialschools.prototype.getPublicPostsFromUrl(this.nextUrl, {}, callback);
-    };
-
-    CommentsCollection.prototype.getNextPage = function (callback) {
-        if(!this.nextUrl) {
-            return this;
-        }
-        return Socialschools.prototype.getCommentsFromUrl(this.nextUrl, {}, callback);
-    };
-
-    PostsCollection.prototype.getPreviousPage = function (callback) {
-        if(!this.prevUrl) {
-            return this;
-        }
-        return Socialschools.prototype.getPublicPostsFromUrl(this.prevUrl, {}, callback);
-    };
     window.Socialschools = Socialschools;
 }());
