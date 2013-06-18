@@ -2,7 +2,7 @@
 {% load sekizai_tags %}
 
 {% addtoblock 'js' %}
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script src="{% static 'cmsplugin_socialschools/js/jquery.1.9.1.min.js' %}"></script>
 <script src="{% static 'cmsplugin_socialschools/js/socialschools.js' %}"></script>
 <script src="{% static 'cmsplugin_socialschools/js/lib/underscore-min.js' %}"></script>
 <script id="post-template" type="text/x-handlebars-template">
@@ -11,43 +11,25 @@
 <script id="comment-template" type="text/x-handlebars-template">
     {% include "cms_plugins/socialschools/comment.html" %}
 </script>
+<script src="{% static 'cmsplugin_socialschools/js/socialschools_cmsplugin.js' %}"></script>
 <script type="text/javascript">
-    var postTemplate = _.template($('#post-template').html());
-    var commentTemplate = _.template($('#comment-template').html());
     var socialschools = new Socialschools('{{ instance.socialschools_url }}');
-    var renderPosts = function(posts) {
-        _.each(posts, function(post) {
-            var postHtml = postTemplate(post)
-            var $post = $(document.createElement('div'));
-            $post.html(postHtml)
-            $('#cms-instance-{{ instance.id }}').find('.css-posts-content').append($post);
-            post.getComments(function(comments) {
-                _.each(comments, function(comment) {
-                    var commentHtml = commentTemplate(comment)
-                    $post.find('.post-comments-container').append(commentHtml)
-                });
-            });
+    var posts = socialschools.getPublicPosts({{ instance.community_id }}, {
+        {% if instance.only_descendants %}
+            only_descendants: true
+        {% else %}
+            only_descendants: false
+        {% endif %}
+        }, function (posts) {
+            renderPosts('#cms-instance-{{ instance.id }}', posts)
         });
-    }
-var posts = socialschools.getPublicPosts({{ instance.community_id }}, {
-    {% if instance.only_descendants %}
-        only_descendants: true
-    {% else %}
-        only_descendants: false
-    {% endif %}
-    }, renderPosts);
-    $(function() {
-        $('#cms-instance-{{ instance.id }}').find('#css-posts-add-more').on('click', function (e) {
-            e.preventDefault();
-            posts = posts.getNextPage(renderPosts)
-        });
-    })
-</script>
+    </script>
 
 {% endaddtoblock %}
 
 <div id='cms-instance-{{ instance.id }}'>
         <div class="css-posts-content">
         </div>
-        <a class="css-posts-add-more" href="">more</a>
+        <a class="css-posts-prev-page" href="">Previous</a>
+        <a class="css-posts-next-page" href="">Next</a>
 </div>

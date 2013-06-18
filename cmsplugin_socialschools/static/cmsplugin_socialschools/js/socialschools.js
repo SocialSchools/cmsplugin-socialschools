@@ -69,7 +69,7 @@
             data: options,
             success: function (data) {
                 ret.addPosts(data);
-                callback(ret.posts);
+                callback(ret);
            }
         });
         return ret;
@@ -128,7 +128,14 @@
         if(!this.nextUrl) {
             return this;
         }
-        return Socialschools.prototype.getPublicPostsFromUrl(this.nextUrl, callback);
+        return Socialschools.prototype.getPublicPostsFromUrl(this.nextUrl, {}, callback);
+    };
+
+    PostsCollection.prototype.getPreviousPage = function (callback) {
+        if(!this.prevUrl) {
+            return this;
+        }
+        return Socialschools.prototype.getPublicPostsFromUrl(this.prevUrl, {}, callback);
     };
     window.Socialschools = Socialschools;
 }());

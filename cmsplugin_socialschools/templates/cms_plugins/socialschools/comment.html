@@ -1,0 +1,17 @@
+{% load staticfiles %}
+{% autoescape off %}
+<div class="comment">
+    <div class="pull-left">
+            <img src="{% static 'css/img/unknown.png' %}">
+    </div>
+    <div class="comment-body">
+        <span class="comment-author"><%= (commented_by.first_name + ' ' + commented_by.last_name)  %></span>
+        <span>
+            <%= body %>
+        </span>
+        <br>
+        <span class="comment-timestamp">comment date</span>
+    </div>
+</div>
+
+{% endautoescape %}
