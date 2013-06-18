@@ -10,7 +10,7 @@
             <%= body %>
         </span>
         <br>
-        <span class="comment-timestamp">comment date</span>
+        <span class="comment-timestamp"><%= moment(date_created).format('LL') %></span>
     </div>
 </div>
 

@@ -5,7 +5,7 @@
 <div class="post clearfix">
     <div class="post-labels">
         <div class="post-label-picture">
-            <img src="{% static 'css/img/unknown.png' %}">
+            <img src="<%= posted_by.picture ? posted_by.picture.small : '{% static 'css/img/unknown.png' %}' %>">
         </div>
     </div>
 
@@ -13,7 +13,7 @@
     <div class="post-body">
         <div class="post-message-container">
             <h3 class="post-header"><%= title %></h3>
-            <span class="post-author"><a><%= posted_by.first_name %></a></span><span class="post-timestamp">post date here</span><span class="pull-right">{% trans 'Posted in' %}: <%= community %></span>
+            <span class="post-author"><a><% print(posted_by.first_name + ' ' + posted_by.last_name) %></a></span> on <span class="post-timestamp"><%= moment(date_created).format('LL') %></span><span class="pull-right">{% trans 'Posted in' %}: <%= _community_name %></span>
             <div class="post-description">
                 <p><%= description %></p>
             </div>
