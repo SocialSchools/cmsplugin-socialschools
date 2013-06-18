@@ -13,24 +13,68 @@
         }
     }
 
+    function Model() {
+        return function (obj) {
+            cloneToObject.call(this, obj);
+        };
+    }
+
+    function Collection(ModelClass) {
+        return function () {
+            var that = this;
+            this.objects = [];
+
+            this.add = function (data) {
+                for(var object in data.results) {
+                    that.objects.push(new ModelClass(data.results[object]));
+                }
+                that.nextUrl = data.next;
+                that.prevUrl = data.previous;
+            }
+
+            this.getFromUrl = function(url, options, callback) {
+                that.ajax = $.ajax({
+                    dataType: 'jsonp',
+                    url: url,
+                    data: options,
+                    success: function (data) {
+                        that.add(data);
+                        if (callback) {
+                            callback(that);
+                        }
+                   }
+                });
+                return that;
+            }
+
+            this.getPreviousPage =  function (callback) {
+                if(!that.prevUrl) {
+                    return this;
+                }
+                return (new this.constructor()).getFromUrl(that.prevUrl, undefined, callback)
+            };
+
+            this.getNextPage =  function (callback) {
+                if(!that.nextUrl) {
+                    return this;
+                }
+                return (new this.constructor()).getFromUrl(that.nextUrl, undefined, callback)
+            };
+        };
+    }
+
     function Socialschools(baseUrl) {
         this.baseUrl = baseUrl + 'apiv1/';
     }
 
-    function Post(obj) {
-        cloneToObject.call(this, obj);
-    }
+    var Post = new Model();
+    var Comment = new Model();
+    var Photo = new Model();
 
-    function Comment(obj) {
-        cloneToObject.call(this, obj);
-    }
-
-    function Photo(obj) {
-        cloneToObject.call(this, obj);
-    }
+    var CommentsCollection = new Collection(Comment)
 
     Post.prototype.getComments = function (callback) {
-        return Socialschools.prototype.getCommentsFromUrl(this.comments, {}, callback);
+        return (new CommentsCollection()).getFromUrl(this.comments, undefined, callback)
     };
 
     Post.prototype.getPhotos = function (callback) {
@@ -45,22 +89,10 @@
         this.photos = [];
     }
 
-    function CommentsCollection() {
-        this.comments = [];
-    }
-
     PostsCollection.prototype.addPosts = function (posts) {
         for(var post in posts) {
             this.posts.push(new Post(posts[post]));
         }
-    }
-
-    CommentsCollection.prototype.addComments = function (comments) {
-        for(var comment in comments.results) {
-            this.comments.push(new Comment(comments.results[comment]));
-        }
-        this.nextUrl = comments.next;
-        this.prevUrl = comments.previous;
     }
 
     Socialschools.prototype.getPublicPostsFromUrl = function (url, options, callback) {
@@ -73,20 +105,6 @@
                 ret.addPosts(data);
                 callback(ret);
            }
-        });
-        return ret;
-    };
-
-    Socialschools.prototype.getCommentsFromUrl = function (url, options, callback) {
-        var ret = new CommentsCollection();
-        ret.ajax = $.ajax({
-            dataType: 'jsonp',
-            url: url,
-            data: options,
-            success: function (data) {
-                ret.addComments(data);
-                callback(ret);
-            }
         });
         return ret;
     };
@@ -119,11 +137,6 @@
     }
 
     PhotoCollection.prototype.addPhotos = function (data) {
-        for(var photo in data.results) {
-            this.photos.push(new Photo(data.results[photo]));
-        }
-        this.nextUrl = data.next;
-        this.prevUrl = data.previous;
     }
 
     PostsCollection.prototype.getNextPage = function (callback) {

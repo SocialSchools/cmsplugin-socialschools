@@ -3,7 +3,7 @@ var postTemplate = _.template($('#post-template').html()),
 
 function renderComments($post, comments) {
     'use strict';
-    _.each(comments.comments, function (comment) {
+    _.each(comments.objects, function (comment) {
         var commentHtml = commentTemplate(comment);
         $post.find('.post-comments-container').append(commentHtml);
     });
