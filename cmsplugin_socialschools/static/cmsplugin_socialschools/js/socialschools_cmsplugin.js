@@ -1,5 +1,6 @@
 var postTemplate = _.template($('#post-template').html()),
-    commentTemplate = _.template($('#comment-template').html());
+    commentTemplate = _.template($('#comment-template').html()),
+    photoTemplate = _.template($('#photo-template').html());
 
 function renderComments($post, comments) {
     'use strict';
@@ -18,6 +19,14 @@ function renderComments($post, comments) {
     });
 }
 
+function renderPhotos($post, photos) {
+    'use strict';
+    _.each(photos.objects, function (photo) {
+        var photoHtml = photoTemplate(photo);
+        $post.find('.post-photos-container').append(photoHtml);
+    });
+}
+
 function renderPosts(selector, posts) {
     'use strict';
     $(selector).find('.css-posts-content').empty();
@@ -28,6 +37,9 @@ function renderPosts(selector, posts) {
         $(selector).find('.css-posts-content').append($post);
         post.getComments(function (comments) {
             renderComments($post, comments);
+        });
+        post.getPhotos(function (photos) {
+            renderPhotos($post, photos);
         });
     });
     $(function () {

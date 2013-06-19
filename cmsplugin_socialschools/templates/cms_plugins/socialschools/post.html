@@ -17,12 +17,15 @@
             <div class="post-description">
                 <p><%= description %></p>
             </div>
-            <div class="row-fluid">
 
-    <!-- Show Comments -->
-        <div class="post-comments-container">
+
+            <!-- Show Comments -->
+            <div class="post-photos-container row" id="gallery" data-toggle="modal-gallery" data-target="#modal-gallery">
+            </div>
+            <div class="post-comments-container">
+            </div>
+            <a class="css-comments-next-page" href="">Load more</a>
         </div>
-        <a class="css-comments-next-page" href="">Load more</a>
     </div>
 </div>
 {% endautoescape %}
