@@ -1,0 +1,10 @@
+*.pyc
+*.DS_STORE
+/media/
+/static/
+*.egg-info
+/dist
+_build/
+
+node_modules/
+npm-debug.log

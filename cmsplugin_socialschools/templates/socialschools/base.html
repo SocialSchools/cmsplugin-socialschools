@@ -1,0 +1,73 @@
+{% load staticfiles %}
+{% load sekizai_tags %}
+{% load menu_tags %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="csrf-token" content="{{csrf_token}}">
+
+        <title>{% block _title %}{% endblock %}</title>
+
+        <meta name="description" content="{% block _description %}{% endblock %}">
+        <meta name="keywords" content="{% block _keywords %}{% endblock %}">
+        <meta name="author" content="Changer">
+
+        <link rel="stylesheet/less" type="text/css" href="{% static 'cmsplugin_socialschools/css/styles.less' %}">
+        <script src="{% static 'cmsplugin_socialschools/js/less.1.3.3.min.js' %}"></script>
+        {% render_block 'css' %}
+    </head>
+    <body>
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                {% block navbar%}
+                <ul class="nav">
+                    {% show_menu 0 0 %}
+                    {% show_menu 1 2 100 100 %}
+                </ul>
+                {% endblock %}
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            {% block wrapper %}
+            {% endblock %}
+        </div>
+
+        <footer class="footer">
+            {% block footer %}
+            <div class="container">
+                {% show_menu 1 2 100 100 "socialschools/footer.html"%}
+            </div>
+            {% endblock %}
+        </footer>
+        {% block js %}
+        {% endblock %}
+        {% render_block 'js' %}
+
+        <!-- modal-gallery is the modal dialog used for the image gallery -->
+        <div id="modal-gallery" class="modal modal-gallery hide fade" tabindex="-1">
+            <div class="modal-header">
+                <a class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title"></h3>
+            </div>
+            <div class="modal-body"><div class="modal-image"></div></div>
+            <div class="modal-footer">
+                <a class="btn btn-primary modal-next">Next <i class="icon-arrow-right icon-white"></i></a>
+                <a class="btn btn-info modal-prev"><i class="icon-arrow-left icon-white"></i> Previous</a>
+                <a class="btn btn-success modal-play modal-slideshow" data-slideshow="5000"><i class="icon-play icon-white"></i> Slideshow</a>
+                <a class="btn modal-download" target="_blank"><i class="icon-download"></i> Download</a>
+            </div>
+        </div>
+
+    </body>
+</html>
+
+{% addtoblock "js" %}
+<script type="text/javascript" src="{% static 'socialschools/js/jquery.1.9.1.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'socialschools/js/bootstrap.min.js' %}"></script>
+{% endaddtoblock %}
