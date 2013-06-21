@@ -1,5 +1,6 @@
 {% load staticfiles %}
 {% load sekizai_tags %}
+{% load i18n %}
 
 {% addtoblock 'js' %}
 <script src="{% static 'cmsplugin_socialschools/js/jquery.1.9.1.min.js' %}"></script>
@@ -34,9 +35,9 @@
 
 {% endaddtoblock %}
 
-<div id='cms-instance-{{ instance.id }}'>
+<div id="cms-instance-{{ instance.id }}">
         <div class="css-posts-content">
         </div>
-        <a class="css-posts-prev-page" href="">Previous</a>
-        <a class="css-posts-next-page" href="">Next</a>
+        <a class="css-posts-prev-page" href="">{% trans 'Previous' %}</a>
+        <a class="css-posts-next-page" href="">{% trans 'Next' %}</a>
 </div>
