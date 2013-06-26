@@ -13,19 +13,18 @@
     <div class="post-body">
         <div class="post-message-container">
             <h3 class="post-header"><%= title %></h3>
-            <span class="post-author"><a><% print(posted_by.first_name + ' ' + posted_by.last_name) %></a></span> on <span class="post-timestamp"><%= moment(date_created).format('LL') %></span><span class="pull-right">{% trans 'Posted in' %}: <%= _community_name %></span>
+            <% print(posted_by.first_name + ' ' + posted_by.last_name) %> <span class="meta-info">{% trans 'in' %}</span> <%= _community_name %> <span class="meta-info">{% trans 'on' %} <%= moment(date_created).format('LL') %></span>
             <div class="post-description">
                 <p><%= description %></p>
             </div>
-
-
-            <!-- Show Comments -->
             <div class="post-photos-container row" id="gallery" data-toggle="modal-gallery" data-target="#modal-gallery">
             </div>
-            <div class="post-comments-container">
-            </div>
-            <a class="css-comments-next-page" href="">{% trans 'Load more' %}</a>
         </div>
+
+            <!-- Show Comments -->
+        <div class="post-comments-container">
+        </div>
+        <a class="css-comments-next-page" href="">{% trans 'Load more' %}</a>
     </div>
 </div>
 {% endautoescape %}
