@@ -43,6 +43,16 @@ function renderPosts(selector, posts) {
         });
     });
     $(function () {
+        if (!posts.nextUrl) {
+            $(selector).find('a.css-posts-next-page').hide();
+        } else {
+            $(selector).find('a.css-posts-next-page').show();
+        }
+        if (!posts.prevUrl) {
+            $(selector).find('a.css-posts-prev-page').hide();
+        } else {
+            $(selector).find('a.css-posts-prev-page').show();
+        }
         $(selector).find('a.css-posts-next-page').off('click').on('click', function (e) {
             e.preventDefault();
             posts.getNextPage(function (posts) {
