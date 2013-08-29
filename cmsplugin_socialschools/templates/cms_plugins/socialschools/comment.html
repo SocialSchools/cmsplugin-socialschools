@@ -2,7 +2,7 @@
 {% autoescape off %}
 <div class="comment">
     <div class="pull-left">
-            <img src="<%= commented_by.picture ? commented_by.picture.small : '{% static 'cmsplugin_socialschools/css/img/unknown.png' %}' %>">
+            <img src="<%= commented_by.picture ? commented_by.picture : '{% static 'cmsplugin_socialschools/css/img/unknown.png' %}' %>">
     </div>
     <div class="comment-body">
         <span class="comment-author"><%= (commented_by.first_name + ' ' + commented_by.last_name)  %></span>
