@@ -25,6 +25,7 @@
 
 {% addtoblock 'js' %}
 <script type="text/javascript">
+(function () {
     var socialschools = new Socialschools('{{ instance.socialschools_url }}');
     var posts = socialschools.getPublicPosts({{ instance.community_id }}, {
         {% if instance.only_descendants %}
@@ -35,6 +36,7 @@
         }, function (posts) {
             renderPosts('#cms-instance-{{ instance.id }}', posts)
         });
+}());
 </script>
 {% endaddtoblock %}
 
