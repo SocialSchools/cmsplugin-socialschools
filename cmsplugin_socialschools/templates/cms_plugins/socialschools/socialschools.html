@@ -4,11 +4,9 @@
 
 {# Separate addtoblocks used so all static stuff only gets rendered once #}
 {% addtoblock 'js' %}
-<script src="{% static 'cmsplugin_socialschools/js/jquery.1.9.1.min.js' %}"></script>
 <script src="{% static 'cmsplugin_socialschools/js/socialschools.js' %}"></script>
 <script src="{% static 'cmsplugin_socialschools/js/lib/underscore-min.js' %}"></script>
 <script src="{% static 'cmsplugin_socialschools/js/lib/moment.min.js' %}"></script>
-<script src="{% static 'cmsplugin_socialschools/js/lib/bootstrap.min.js' %}"></script>
 <script src="{% static 'cmsplugin_socialschools/js/lib/load-image.min.js' %}"></script>
 <script src="{% static 'cmsplugin_socialschools/js/lib/bootstrap-image-gallery.js' %}"></script>
 <script id="post-template" type="text/x-handlebars-template">
@@ -22,6 +20,24 @@
 </script>
 <script src="{% static 'cmsplugin_socialschools/js/socialschools_cmsplugin.js' %}"></script>
 {% endaddtoblock %}
+
+{# modal-gallery is the modal dialog used for the image gallery #}
+{% addtoblock 'js' %}
+    <div id="modal-gallery" class="modal modal-gallery hide fade" tabindex="-1">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <h3 class="modal-title"></h3>
+        </div>
+        <div class="modal-body"><div class="modal-image"></div></div>
+        <div class="modal-footer">
+            <a class="btn btn-primary modal-prev"><i class="icon-arrow-left icon-white"></i>{% trans 'Previous' %}</a>
+            <a class="btn btn-primary modal-next">{% trans 'Next' %} <i class="icon-arrow-right icon-white"></i></a>
+            <a class="btn modal-play modal-slideshow" data-slideshow="5000"><i class="icon-play"></i> {% trans 'Slideshow' %}</a>
+            <a class="btn modal-download" target="_blank"><i class="icon-download"></i> {% trans 'Download' %}</a>
+        </div>
+    </div>
+{% endaddtoblock %}
+
 
 {% addtoblock 'js' %}
 <script type="text/javascript">
@@ -39,6 +55,8 @@
 }());
 </script>
 {% endaddtoblock %}
+
+
 
 <div id="cms-instance-{{ instance.id }}">
     <div class="css-posts-content">
