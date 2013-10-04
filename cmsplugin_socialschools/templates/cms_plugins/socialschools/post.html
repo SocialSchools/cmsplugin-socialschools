@@ -13,7 +13,7 @@
     <div class="post-body">
         <div class="post-message-container">
             <h3 class="post-header"><%= title %></h3>
-            <% print(posted_by.first_name + ' ' + posted_by.last_name) %> <span class="meta-info">{% trans 'in' %}</span> <%= _community_name %> <span class="meta-info">{% trans 'on (adverb)' %} <%= moment(date_created).format('LL') %></span>
+            <% print(posted_by.first_name + ' ' + posted_by.last_name) %> <span class="meta-info">{% trans 'in' %}</span> <%= _community_name %> <span class="meta-info">{% trans 'on (adverb)' %}</span> <%= moment(date_created).format('LL') %>
             <div class="post-description">
                 <p><%= description %></p>
             </div>
