@@ -1,5 +1,6 @@
 include MANIFEST.in
 include requirements.txt
+recursive-include cmsplugin_socialschools/locale *
 recursive-include cmsplugin_socialschools/templates *
 recursive-include cmsplugin_socialschools/static *
 recursive-exclude * *.pyc
