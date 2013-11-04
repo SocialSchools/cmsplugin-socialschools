@@ -17,6 +17,11 @@
             <div class="post-description">
                 <p><%= description %></p>
             </div>
+            <% if (event){ %>
+                <p class="event-location meta-info"><icon class="icon-map-marker"></icon> <%= event.location %> </p>
+                <p class="event-multiday-time meta-info"><span class="meta-info">{% trans 'Starts' %}</span> &nbsp;<strong><%= moment(event.start_date).format('LL') %></strong></p>
+                <p class="event-multiday-time meta-info"><span class="meta-info">{% trans 'Ends' %}</span> &nbsp;<strong><%= moment(event.end_date).format('LL') %></strong></p>
+            <% } %>
             <div class="post-photos-container row" id="gallery" data-toggle="modal-gallery" data-target="#modal-gallery">
             </div>
         </div>
