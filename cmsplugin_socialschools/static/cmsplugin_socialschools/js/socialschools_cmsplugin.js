@@ -32,12 +32,12 @@ function renderVideos($post, videos) {
     _.each(videos.objects, function (video) {
         var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
         match = video.url.match(regExp)
-        if (match[7].length === 11) {
+        if (match && match[7].length === 11) {
             var iframe = $('<iframe width="560" height="315" src="//www.youtube.com/embed/' + match[7] +'" frameborder="0" allowfullscreen></iframe>');
             $post.find('.post-videos-container').append(iframe);
         }
         else {
-            var video_link = $('<a href=' + video.url + '>');
+            var video_link = $('<a href=' + video.url + '>' + video.url +'</a>');
             $post.find('.post-videos-container').append(video_link);
         }
 
