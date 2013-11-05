@@ -1,6 +1,7 @@
 var postTemplate = _.template($('#post-template').html()),
     commentTemplate = _.template($('#comment-template').html()),
     photoTemplate = _.template($('#photo-template').html());
+    videoTemplate = _.template($('#video-template').html());
 
 function renderComments($post, comments) {
     'use strict';
@@ -27,6 +28,22 @@ function renderPhotos($post, photos) {
     });
 }
 
+function renderVideos($post, videos) {
+    _.each(videos.objects, function (video) {
+        var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+        match = video.url.match(regExp)
+        if (match && match[7].length === 11) {
+            var iframe = $('<iframe width="560" height="315" src="//www.youtube.com/embed/' + match[7] +'" frameborder="0" allowfullscreen></iframe>');
+            $post.find('.post-videos-container').append(iframe);
+        }
+        else {
+            var video_link = $('<a href=' + video.url + '>' + video.url +'</a>');
+            $post.find('.post-videos-container').append(video_link);
+        }
+
+    });
+}
+
 function renderPosts(selector, posts) {
     'use strict';
     $(selector).find('.css-posts-content').empty();
@@ -41,6 +58,11 @@ function renderPosts(selector, posts) {
         post.getPhotos(function (photos) {
             renderPhotos($post, photos);
         });
+        if (post._video_count) {
+            post.getVideos(function (videos) {
+            renderVideos($post, videos)
+        });
+        }
     });
     $(function () {
         if (!posts.nextUrl) {
