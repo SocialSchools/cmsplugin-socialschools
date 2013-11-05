@@ -58,9 +58,11 @@ function renderPosts(selector, posts) {
         post.getPhotos(function (photos) {
             renderPhotos($post, photos);
         });
-        post.getVideos(function (videos) {
+        if (post._video_count) {
+            post.getVideos(function (videos) {
             renderVideos($post, videos)
         });
+        }
     });
     $(function () {
         if (!posts.nextUrl) {
