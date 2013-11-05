@@ -70,10 +70,12 @@
     var Post = new Model();
     var Comment = new Model();
     var Photo = new Model();
+    var Video = new Model();
 
     var CommentsCollection = new Collection(Comment)
     var PostsCollection = new Collection(Post)
     var PhotosCollection = new Collection(Photo)
+    var VideosCollection = new Collection(Video)
 
     Post.prototype.getComments = function (callback) {
         return (new CommentsCollection()).getFromUrl(this.comments, undefined, callback)
@@ -81,6 +83,10 @@
 
     Post.prototype.getPhotos = function (callback) {
         return (new PhotosCollection()).getFromUrl(this.photos, undefined, callback)
+    };
+
+    Post.prototype.getVideos = function (callback) {
+        return (new VideosCollection()).getFromUrl(this.videos, undefined, callback)
     };
 
     Socialschools.prototype.getPublicPosts = function (communityId, options, callback) {
