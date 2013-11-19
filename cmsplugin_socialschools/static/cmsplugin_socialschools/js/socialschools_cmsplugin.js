@@ -3,22 +3,22 @@ var postTemplate = _.template($('#post-template').html()),
     photoTemplate = _.template($('#photo-template').html());
     videoTemplate = _.template($('#video-template').html());
 
-function renderComments($post, comments) {
-    'use strict';
-    _.each(comments.objects, function (comment) {
-        var commentHtml = commentTemplate(comment);
-        $post.find('.post-comments-container').append(commentHtml);
-    });
-    if (!comments.nextUrl) {
-        $post.find('a.css-comments-next-page').remove();
-    }
-    $post.find('a.css-comments-next-page').off('click').on('click', function (e) {
-        e.preventDefault();
-        comments.getNextPage(function (comments) {
-            renderComments($post, comments);
-        });
-    });
-}
+// function renderComments($post, comments) {
+//     'use strict';
+//     _.each(comments.objects, function (comment) {
+//         var commentHtml = commentTemplate(comment);
+//         $post.find('.post-comments-container').append(commentHtml);
+//     });
+//     if (!comments.nextUrl) {
+//         $post.find('a.css-comments-next-page').remove();
+//     }
+//     $post.find('a.css-comments-next-page').off('click').on('click', function (e) {
+//         e.preventDefault();
+//         comments.getNextPage(function (comments) {
+//             renderComments($post, comments);
+//         });
+//     });
+// }
 
 function renderPhotos($post, photos) {
     'use strict';
@@ -51,9 +51,9 @@ function renderPosts(selector, posts) {
             $post = $(document.createElement('div'));
         $post.html(postHtml);
         $(selector).find('.css-posts-content').append($post);
-        post.getComments(function (comments) {
-            renderComments($post, comments);
-        });
+        // post.getComments(function (comments) {
+        //     renderComments($post, comments);
+        // });
         post.getPhotos(function (photos) {
             renderPhotos($post, photos);
         });
