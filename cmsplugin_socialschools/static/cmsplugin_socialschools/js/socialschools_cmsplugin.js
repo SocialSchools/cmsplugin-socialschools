@@ -40,7 +40,6 @@ function renderVideos($post, videos) {
             var video_link = $('<a href=' + video.url + '>' + video.url +'</a>');
             $post.find('.post-videos-container').append(video_link);
         }
-
     });
 }
 
