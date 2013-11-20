@@ -4,27 +4,65 @@
 {% autoescape off %}
 <div class="post clearfix">
     <div class="post-labels">
-        <div class="post-label-picture">
-            <img src="<%= posted_by.picture ? posted_by.picture : '{% static 'cmsplugin_socialschools/css/img/unknown.png' %}' %>">
-        </div>
+        <% if (event){ %>
+            <div class="post-label-type post-color-event">
+                <icon class="icon-calendar icon-white"></icon>
+            </div>
+        <% } else { %>
+            <div class="post-label-type post-color-comment">
+                <icon class="icon-comment icon-white"></icon>
+            </div>
+        <% } %>
     </div>
 
     <!-- Post body -->
-    <div class="post-body">
+    <% if (event){ %>
+        <div class="post-body post-body-color-event">
+    <% } else { %>
+        <div class="post-body post-body-color-comment">
+    <% } %>
         <div class="post-message-container">
-            <h3 class="post-header"><%= title %></h3>
-            <% print(posted_by.first_name + ' ' + posted_by.last_name) %> <span class="meta-info">{% trans 'in' %}</span> <%= _community_name %> <span class="meta-info">{% trans 'on (adverb)' %}</span> <%= moment(date_created).format('LL') %>
+            <div class="clearfix">
+                <img class="post-author-picture pull-left" src="<%= posted_by.picture ? posted_by.picture : '{% static 'cmsplugin_socialschools/css/img/unknown.png' %}' %>">
+            <div class="post-meta pull-left">
+                <% print(posted_by.first_name + ' ' + posted_by.last_name) %> <span class="meta-info">{% trans 'in' %}</span> <%= _community_name %>
+                <br>
+                <span class="meta-info">
+                    {% trans 'on (adverb)' %}
+                    <%= moment(date_created).format('LL') %>
+                </span>
+            </div>
+            </div>
+            <hr>
+            <h2 class="post-header"><%= title %></h2>
             <div class="post-description">
                 <p><%= description %></p>
             </div>
-            <div class="post-photos-container row" id="gallery" data-toggle="modal-gallery" data-target="#modal-gallery">
+            <% if (event){ %>
+                <div class="row-fluid">
+                    <div class="event-icon">
+                        <div class="event-icon-month">
+                            <%= moment(event.start_date).format('MMM') %>
+                        </div>
+                        <div class="event-icon-day">
+                            <p class="event-icon-day-number"><%= moment(event.start_date).format('DD') %></p>
+                            <span><%= moment(event.start_date).format('dddd') %></span>
+                        </div>
+                    </div>
+                    <div class="event-details">
+                    <p class="event-location meta-info"><icon class="icon-map-marker"></icon> <%= event.location %> </p>
+                    <p class="event-multiday-time meta-info"><span class="meta-info">{% trans 'Starts' %}</span> &nbsp;<strong><%= moment(event.start_date).format('LL H:mm') %></strong></p>
+                    <p class="event-multiday-time meta-info"><span class="meta-info">{% trans 'Ends' %}</span> &nbsp;<strong><%= moment(event.end_date).format('LL H:mm') %></strong></p>
+                    </div>
+                </div>
+            <% } %>
+            <div class="post-photos-container gallery clearfix" data-toggle="modal-gallery" data-target="#modal-gallery">
             </div>
+            <div class="post-videos-container">
+            </div>
+<!--             <div class="post-comments-container">
+            </div> -->
         </div>
-
-            <!-- Show Comments -->
-        <div class="post-comments-container">
-        </div>
-        <a class="css-comments-next-page" href="">{% trans 'Load more' %}</a>
     </div>
 </div>
 {% endautoescape %}
