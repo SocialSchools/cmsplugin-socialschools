@@ -1,7 +1,7 @@
 {% load staticfiles %}
 {% load sekizai_tags %}
 {% load i18n %}
-z
+
 {# Separate addtoblocks used so all static stuff only gets rendered once #}
 {% addtoblock 'js' %}
 <script src="{% static 'cmsplugin_socialschools/js/socialschools.js' %}"></script>
@@ -9,7 +9,6 @@ z
 <script src="{% static 'cmsplugin_socialschools/js/lib/moment+langs.min.js' %}"></script>
 <script src="{% static 'cmsplugin_socialschools/js/lib/load-image.min.js' %}"></script>
 <script src="{% static 'cmsplugin_socialschools/js/lib/bootstrap-image-gallery.js' %}"></script>
-
 <script id="post-template" type="text/x-handlebars-template">
     {% include "cms_plugins/socialschools/post.html" %}
 </script>
@@ -35,7 +34,7 @@ z
             <a class="close" data-dismiss="modal">&times;</a>
             <h3 class="modal-title"></h3>
         </div>
-        <div class="modal-body"><div class="modal-image"></div></div>
+        :<div class="modal-body"><div class="modal-image"></div></div>
         <div class="modal-footer">
             <a class="btn btn-primary modal-prev"><i class="icon-arrow-left icon-white"></i>{% trans 'Previous' %}</a>
             <a class="btn btn-primary modal-next">{% trans 'Next' %} <i class="icon-arrow-right icon-white"></i></a>
@@ -55,6 +54,14 @@ z
             only_descendants: true
         {% else %}
             only_descendants: false
+        {% endif %},
+        {% if instance.only_headlines %}
+            only_headlines: true
+        {% else %}
+            only_headlines: false
+        {% endif %}
+        {% if instance.number_of_items %}
+            count: {{ instance.instance_of_items }}
         {% endif %}
         }, function (posts) {
             renderPosts('#cms-instance-{{ instance.id }}', posts)
@@ -63,9 +70,7 @@ z
 </script>
 {% endaddtoblock %}
 
-{% if instance.only_headlines %}
- {% include "cms_plugins/socialschools/news.html" %}
-{% endif %}
+
 
 <div id="cms-instance-{{ instance.id }}">
     <div class="css-posts-content">
