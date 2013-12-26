@@ -1,0 +1,53 @@
+{% load i18n %}
+{% load staticfiles %}
+
+{% autoescape off %}
+
+<aside class="content-block">
+  <div class="tabbar">
+    <div class="date-icon purple">
+      <span class="date-day"><%= moment(date_created).format('D') %></span> 
+      <span class="date-month"><%= moment(date_created).format('MMM') %></span>
+    </div>
+    <div class="tab-icon news "></div>   
+    <div class="posted-by">
+       <img class="post-author-picture pull-left" src="<%= posted_by.picture ? posted_by.picture : '{% static 'cmsplugin_socialschools/css/img/unknown.png' %}' %>">
+    </div>
+    </div>
+    <div class="content">
+      <div class="postedin">
+        <% print(posted_by.first_name + ' ' + posted_by.last_name) %> <span class="meta-info">{% trans 'in' %}</span> <%= _community_name %>
+      </div>
+
+    <ul class="tools">  
+      <li class="publish published ">
+        <a title="Niet meer publiceren" href="/posts/unpublish/news/1142" class="post-publication serverside">&nbsp;</a>
+      </li>      
+      <li class="delete">
+        <a class="serverside" title="Verwijderen" onclick="return window.confirm(&quot;Weet je het zeker?&quot;)" href="/posts/delete/1142/news">&nbsp;</a>
+      </li>
+  </ul>
+
+
+  <div class="item-heading">
+    <div class="item-title">
+      <h1><%= title %></h1>
+      <p><a href="/profile/view/2869/?format=popup" class="profile-link" name="2869">Astrid Sloof</a></p>
+    </div>
+  </div>
+
+    <div class="item-body">
+      <p><%= description %></p>
+    </div>
+
+    <div class="post-photos-container gallery clearfix" data-toggle="modal-gallery" data-target="#modal-gallery"></div>
+    
+    <div class="post-videos-container">
+    </div>
+
+          
+    <div class="clear">     
+    </div>
+        
+  </div>
+</aside>

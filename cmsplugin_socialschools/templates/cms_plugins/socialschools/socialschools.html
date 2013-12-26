@@ -1,7 +1,7 @@
 {% load staticfiles %}
 {% load sekizai_tags %}
 {% load i18n %}
-
+z
 {# Separate addtoblocks used so all static stuff only gets rendered once #}
 {% addtoblock 'js' %}
 <script src="{% static 'cmsplugin_socialschools/js/socialschools.js' %}"></script>
@@ -9,6 +9,7 @@
 <script src="{% static 'cmsplugin_socialschools/js/lib/moment+langs.min.js' %}"></script>
 <script src="{% static 'cmsplugin_socialschools/js/lib/load-image.min.js' %}"></script>
 <script src="{% static 'cmsplugin_socialschools/js/lib/bootstrap-image-gallery.js' %}"></script>
+
 <script id="post-template" type="text/x-handlebars-template">
     {% include "cms_plugins/socialschools/post.html" %}
 </script>
@@ -62,7 +63,9 @@
 </script>
 {% endaddtoblock %}
 
-
+{% if instance.only_headlines %}
+ {% include "cms_plugins/socialschools/news.html" %}
+{% endif %}
 
 <div id="cms-instance-{{ instance.id }}">
     <div class="css-posts-content">

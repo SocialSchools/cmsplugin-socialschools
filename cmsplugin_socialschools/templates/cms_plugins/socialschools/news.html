@@ -1,0 +1,16 @@
+<aside class="content-block">
+  <div class="tabbar">
+    <div class="date-icon magenta">
+        <span class="date-day"><%= moment(date_created).format('D') %></span>
+        <span class="date-month"><%= moment(date_created).format('MMM')</span>
+    </div>
+    <div class="tab-icon organization"></div>
+  </div>
+
+  <div class="content">
+      <h2><% title %></h2>
+    <ul class="news nav">
+        <li class="newsitem"><a href="<% url %>"><% description %></a></li>
+    </ul>
+  </div>
+</aside>
