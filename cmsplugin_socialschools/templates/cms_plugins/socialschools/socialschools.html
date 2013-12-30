@@ -1,7 +1,6 @@
 {% load staticfiles %}
 {% load sekizai_tags %}
 {% load i18n %}
-
 {# Separate addtoblocks used so all static stuff only gets rendered once #}
 {% addtoblock 'js' %}
 <script src="{% static 'cmsplugin_socialschools/js/socialschools.js' %}"></script>
@@ -9,8 +8,12 @@
 <script src="{% static 'cmsplugin_socialschools/js/lib/moment+langs.min.js' %}"></script>
 <script src="{% static 'cmsplugin_socialschools/js/lib/load-image.min.js' %}"></script>
 <script src="{% static 'cmsplugin_socialschools/js/lib/bootstrap-image-gallery.js' %}"></script>
+
 <script id="post-template" type="text/x-handlebars-template">
     {% include "cms_plugins/socialschools/post.html" %}
+</script>
+<script id="news-template" type="text/x-handlebars-template">
+    {% include "cms_plugins/socialschools/news.html" %}
 </script>
 <script id="comment-template" type="text/x-handlebars-template">
     {% include "cms_plugins/socialschools/comment.html" %}
@@ -54,14 +57,31 @@
             only_descendants: true
         {% else %}
             only_descendants: false
+        {% endif %}, 
+        {% if instance.only_headlines %}
+          only_headlines: true
+        {% else %}
+          only_headlines: false
+        {% endif %},
+        {% if instance.number_of_items %}
+          number_of_items: {{ instance.number_of_items }}
         {% endif %}
         }, function (posts) {
-            renderPosts('#cms-instance-{{ instance.id }}', posts)
+            {% if instance.number_of_items %}
+              var num = {{ instance.number_of_items }};
+              if (posts.objects.length > 4) {
+                var l = posts.objects.length;
+                var thin = posts.objects.splice(0,4); 
+                posts.objects = thin;
+              }
+              renderPosts('#cms-instance-{{ instance.id }}', posts);
+            {% else %}
+              renderPosts('#cms-instance-{{ instance.id }}', posts);
+            {% endif %}
         });
 }());
 </script>
 {% endaddtoblock %}
-
 
 
 <div id="cms-instance-{{ instance.id }}">
