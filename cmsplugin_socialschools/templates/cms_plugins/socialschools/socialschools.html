@@ -12,9 +12,6 @@
 <script id="post-template" type="text/x-handlebars-template">
     {% include "cms_plugins/socialschools/post.html" %}
 </script>
-<script id="news-template" type="text/x-handlebars-template">
-    {% include "cms_plugins/socialschools/news.html" %}
-</script>
 <script id="comment-template" type="text/x-handlebars-template">
     {% include "cms_plugins/socialschools/comment.html" %}
 </script>
@@ -58,11 +55,6 @@
         {% else %}
             only_descendants: false
         {% endif %}, 
-        {% if instance.only_headlines %}
-          only_headlines: true
-        {% else %}
-          only_headlines: false
-        {% endif %},
         {% if instance.number_of_items %}
           number_of_items: {{ instance.number_of_items }}
         {% endif %}
@@ -83,10 +75,22 @@
 </script>
 {% endaddtoblock %}
 
-
 <div id="cms-instance-{{ instance.id }}">
-    <div class="css-posts-content">
-    </div>
+    <div class="css-posts-content"></div>
+    {% if instance.only_headlines %}
+    <aside class="content-block">
+      <div class="tabbar">
+        <div class="date-icon news-icon magenta">
+            <p>News</p>  
+        </div>
+        <div class="tab-icon organization"></div>
+      </div>
+      <div class="content content-news">
+      <h2>News</h2> 
+      </div>
+    </aside>
+    {% endif %}
+
     <ul class="pager">
         <li>
             <a class="css-posts-prev-page" href="">{% trans 'Previous' %}</a>
