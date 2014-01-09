@@ -8,4 +8,4 @@ class SocialSchools(CMSPlugin):
     only_descendants = models.BooleanField()
     only_headlines = models.BooleanField()
     only_photos = models.BooleanField()
-    number_of_items = models.IntegerField(_('Number of items to show'))
+    number_of_items = models.IntegerField(_('Number of items to show'), blank=True)
