@@ -56,9 +56,11 @@
       Geplande eindtijd <span class="date"><%= moment(event.end_date).format('LL H:mm') %></span><br>
       </p>
       <% } %>
+      {% if !instance.only_photos %}
       <p data-meaningful="true" ct-id="4">
         <%= description %>
       </p>
+      {% endif %}
 
   </div>
   <div class="post-photos-container gallery clearfix" data-toggle="modal-gallery" data-target="#modal-gallery">

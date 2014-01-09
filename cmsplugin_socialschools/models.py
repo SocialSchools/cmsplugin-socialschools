@@ -7,4 +7,5 @@ class SocialSchools(CMSPlugin):
     community_id = models.IntegerField()
     only_descendants = models.BooleanField()
     only_headlines = models.BooleanField()
+    only_photos = models.BooleanField()
     number_of_items = models.IntegerField(_('Number of items to show'))
