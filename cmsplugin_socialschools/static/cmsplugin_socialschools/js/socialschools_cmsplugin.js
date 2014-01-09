@@ -59,10 +59,12 @@ function renderPosts(selector, posts) {
             $post = $(document.createElement('div'));
         console.log(postHtml);
         $post.html(postHtml);
+        
+        $(selector).find('.css-posts-content').append($post);
         $(selector).find('.content-news').append($post);
         // post.getComments(function (comments) {
         //     renderComments($post, comments);
-        // });
+        // });  
         post.getPhotos(function (photos) {
             renderPhotos($post, photos);
         });
