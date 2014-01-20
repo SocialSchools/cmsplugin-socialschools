@@ -1,7 +1,8 @@
-var postTemplate = _.template($('#post-template').html()),
-    commentTemplate = _.template($('#comment-template').html()),
-    photoTemplate = _.template($('#photo-template').html());
-    videoTemplate = _.template($('#video-template').html());
+var postTemplate = _.template($('#post-template').html());
+var commentTemplate = _.template($('#comment-template').html());
+var photoTemplate = _.template($('#photo-template').html());
+var videoTemplate = _.template($('#video-template').html());
+var newsTemplate = _.template($('#news-template').html());
 
 // function renderComments($post, comments) {
 //     'use strict';
@@ -20,12 +21,16 @@ var postTemplate = _.template($('#post-template').html()),
 //     });
 // }
 
-function renderNews($post, news) {
-  'use strict';
-  _.each(news.objects, function (news) {
-    var newsHtml = newsTemplate(news);
-    $post.find('.news-container').append(newsHtml);
-  });
+function renderNews(selector, posts) {
+   'use strict';
+    $(selector).find('.css-posts-content').empty();
+    _.each(posts.objects, function (post) {
+        var newsHtml = newsTemplate(post),
+            $post = $(document.createElement('div'));
+        console.log(newsHtml);
+        $post.html(newsHtml);
+        $(selector).find('.news').append($post);
+    });
 }
 
 function renderPhotos($post, photos) {
@@ -57,11 +62,9 @@ function renderPosts(selector, posts) {
     _.each(posts.objects, function (post) {
         var postHtml = postTemplate(post),
             $post = $(document.createElement('div'));
-        console.log(postHtml);
-        $post.html(postHtml);
-        
+        $post.html(postHtml);  
         $(selector).find('.css-posts-content').append($post);
-        $(selector).find('.content-news').append($post);
+
         // post.getComments(function (comments) {
         //     renderComments($post, comments);
         // });  
