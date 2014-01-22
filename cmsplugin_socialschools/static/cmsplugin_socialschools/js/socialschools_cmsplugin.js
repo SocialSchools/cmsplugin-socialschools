@@ -28,7 +28,6 @@ function renderNews(selector, posts) {
     _.each(posts.objects, function (post) {
         var newsHtml = newsTemplate(post),
             $post = $(document.createElement('div'));
-        console.log(newsHtml);
         $post.html(newsHtml);
         $(selector).find('.news').append($post);
     });
@@ -64,7 +63,7 @@ function renderPublicPhotos(selector, photos) {
     var photoHTML = pubPhotoTemplate(photo),
       $post = $(document.createElement('div'));
       $post.html(photoHTML);
-      $(selector).find('.css-pub-container').append($post);
+      $(selector).find('.content-pub-photo').append($post);
   });
 }
 
