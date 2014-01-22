@@ -3,6 +3,7 @@ var commentTemplate = _.template($('#comment-template').html());
 var photoTemplate = _.template($('#photo-template').html());
 var videoTemplate = _.template($('#video-template').html());
 var newsTemplate = _.template($('#news-template').html());
+var pubPhotoTemplate = _.template($('#pub-photo-template').html());
 
 // function renderComments($post, comments) {
 //     'use strict';
@@ -54,6 +55,17 @@ function renderVideos($post, videos) {
             $post.find('.post-videos-container').append(video_link);
         }
     });
+}
+
+function renderPublicPhotos(selector, photos) {
+  'use strict';
+  $(selector).find('.css-pub-container').empty();
+  _.each(photos.objects, function (photo) {
+    var photoHTML = pubPhotoTemplate(photo),
+      $post = $(document.createElement('div'));
+      $post.html(photoHTML);
+      $(selector).find('.css-pub-container').append($post);
+  });
 }
 
 function renderPosts(selector, posts) {

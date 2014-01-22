@@ -12,6 +12,9 @@
 <script id="post-template" type="text/x-handlebars-template">
     {% include "cms_plugins/socialschools/post.html" %}
 </script>
+<script id="pub-photo-template" type="text/x-handlebars-template">
+    {% include "cms_plugins/socialschools/pubphoto.html" %}
+</script>
 <script id="comment-template" type="text/x-handlebars-template">
     {% include "cms_plugins/socialschools/comment.html" %}
 </script>
@@ -49,6 +52,10 @@
 <script type="text/javascript">
 (function () {
     var socialschools = new Socialschools('{{ instance.socialschools_url }}');
+    var publicPhotos = socialschools.getPublicPhotos({{ instance.community_id }}, 
+      function (photo) {
+        renderPublicPhotos('#cms-instance-{{ instance.id }}', photo);
+      });
     var posts = socialschools.getPublicPosts({{ instance.community_id }}, {
         {% if instance.only_descendants %}
             only_descendants: true
