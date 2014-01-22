@@ -98,7 +98,6 @@
 
     Socialschools.prototype.getPublicPhotos = function (communityId, options, callback) {
       var url = this.baseUrl + 'public/' + communityId + '/photo/';
-      console.log((new PublicPhotoCollection()).getFromUrl(url, undefined, callback));
       return (new PublicPhotoCollection()).getFromUrl(url, undefined, callback);
     };
 
