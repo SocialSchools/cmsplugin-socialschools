@@ -29,8 +29,9 @@ function renderNews(selector, posts) {
         var newsHtml = newsTemplate(post),
             $post = $(document.createElement('div'));
         $post.html(newsHtml);
-        $(selector).find('.news').append($post);
+        $(selector).find('.news').append($post);     
     });
+    $(".inline").colorbox({inline:true, width:"80%"});
 }
 
 function renderPhotos($post, photos) {
