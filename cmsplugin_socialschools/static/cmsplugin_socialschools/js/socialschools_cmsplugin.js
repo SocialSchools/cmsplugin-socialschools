@@ -60,11 +60,12 @@ function renderPublicPhotos(selector, photos) {
   'use strict';
   $(selector).find('.css-pub-container').empty();
   _.each(photos.objects, function (photo) {
-    var photoHTML = pubPhotoTemplate(photo),
-      $post = $(document.createElement('div'));
-      $post.html(photoHTML);
-      $(selector).find('.content-pub-photo').append($post);
+    var photoHTML = pubPhotoTemplate(photo);
+      $(selector).find('.content-pub-photo').append(photoHTML);
   });
+  if ($('.content-pub-photo').children()) {
+    $('.content-pub-photo').children()[1].innerText = "alle foto's bekijken";
+  }
 }
 
 function renderPosts(selector, posts) {
@@ -73,7 +74,7 @@ function renderPosts(selector, posts) {
     _.each(posts.objects, function (post) {
         var postHtml = postTemplate(post),
             $post = $(document.createElement('div'));
-        $post.html(postHtml);  
+        $post.html(postHtml);
         $(selector).find('.css-posts-content').append($post);
 
         // post.getComments(function (comments) {
@@ -84,7 +85,7 @@ function renderPosts(selector, posts) {
         });
         if (post._video_count) {
             post.getVideos(function (videos) {
-            renderVideos($post, videos)
+            renderVideos($post, videos);
         });
         }
     });
