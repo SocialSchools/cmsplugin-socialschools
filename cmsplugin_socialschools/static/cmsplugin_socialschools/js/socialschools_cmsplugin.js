@@ -4,7 +4,7 @@ var photoTemplate = _.template($('#photo-template').html());
 var videoTemplate = _.template($('#video-template').html());
 var newsTemplate = _.template($('#news-template').html());
 var pubPhotoTemplate = _.template($('#pub-photo-template').html());
-var singlePhotoTemplate = _.template($('#single-pub-photo-template').html());
+var singlePubPhotoTemplate = _.template($('#single-pub-photo-template').html());
 
 // function renderComments($post, comments) {
 //     'use strict';
@@ -65,10 +65,10 @@ function renderPublicPhotos(selector, photos) {
     var photoHTML = pubPhotoTemplate(photo);
       $(selector).find('.content-pub-photo').append(photoHTML);
   });
-  _.each(photos.objects[0], function (photo) {
-    var singlePhotoHTML = singlePhotoTemplate(photo);
-    $(selector).find('.single-photo-container').append(singlePhotoHTML);
-  });
+  console.log(photos.objects[0]);
+  var photo = photos.objects[0]
+  var singlePhotoHTML = singlePubPhotoTemplate(photo);
+  $(selector).find('.single-photo-container').append(singlePhotoHTML);
   if ($('.content-pub-photo').children()) {
     $('.content-pub-photo').children()[1].innerText = "alle foto's bekijken";
     // fix for firefox 
