@@ -66,6 +66,8 @@ function renderPublicPhotos(selector, photos) {
   });
   if ($('.content-pub-photo').children()) {
     $('.content-pub-photo').children()[1].innerText = "alle foto's bekijken";
+    // fix for firefox 
+    $('.content-pub-photo').children()[1].textContent = "alle foto's bekijken";
   }
 }
 
