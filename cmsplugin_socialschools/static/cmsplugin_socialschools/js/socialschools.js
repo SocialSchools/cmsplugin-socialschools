@@ -96,6 +96,11 @@
       return (new PostsCollection()).getFromUrl(url, options, callback);
     };
 
+     Socialschools.prototype.getPublicPhotos = function (communityId, options, callback) {
+      var url = this.baseUrl + 'public/' + communityId + '/photo/';
+      return (new PublicPhotoCollection()).getFromUrl(url, undefined, callback);
+    };
+
     Socialschools.prototype.getPublicPhotos = function (communityId, options, callback) {
       var url = this.baseUrl + 'public/' + communityId + '/photo/';
       return (new PublicPhotoCollection()).getFromUrl(url, undefined, callback);
