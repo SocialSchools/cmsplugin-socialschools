@@ -78,16 +78,8 @@ function renderPublicPhotos(selector, photos) {
     photoTask.done(function () {
       var photoList = $('.content-pub-photo > .item');
       photoList.first().addClass('active');
-    });   
+    });
   });
-  // var photo = photos.objects[0];
-  // var singlePhotoHTML = singlePubPhotoTemplate(photo);
-  // $(selector).find('.single-photo-container').append(singlePhotoHTML);
-  // if ($('.content-pub-photo').children()) {
-  //   $('.content-pub-photo').children()[1].innerText = "alle foto's bekijken";
-  //   // fix for firefox 
-  //   $('.content-pub-photo').children()[1].textContent = "alle foto's bekijken";
-  // }
 }
 
 /**
