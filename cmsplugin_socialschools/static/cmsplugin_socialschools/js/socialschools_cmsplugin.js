@@ -4,7 +4,6 @@ var photoTemplate = _.template($('#photo-template').html());
 var videoTemplate = _.template($('#video-template').html());
 var newsTemplate = _.template($('#news-template').html());
 var pubPhotoTemplate = _.template($('#pub-photo-template').html());
-// var singlePubPhotoTemplate = _.template($('#single-pub-photo-template').html());
 
 /**
  * [renderNews Render News headers]
