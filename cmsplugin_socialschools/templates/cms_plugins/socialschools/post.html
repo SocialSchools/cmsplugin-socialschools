@@ -1,76 +1,68 @@
 {% load i18n %}
 {% load staticfiles %}
-{% load cms_tags %}
-{% autoescape off %}
-<aside class="content-block">
-{% if instance.only_headlines %}
-  <div class="tabbar">
-    <div class="date-icon magenta">
-      <span class="date-day"><%= moment(date_created).format('D') %></span>
-      <span class="date-month"><%= moment(date_created).format('MMM') %></span>
-    </div>
-    <div class="tab-icon organization"></div>
-  </div>
-  <div class="content">
-    <h2><%= _community_name %> news</h2>
-    <ul class="news nav">
-      <li class="newsitem"><a href="<%= url %>"><%= title %></a></li>
-    </ul>
-  </div>
-</aside>
-{% else %}
-<aside class="content-block">
-  <div class="tabbar">
-    <div class="date-icon purple">
-      <span class="date-day"><%= moment(date_created).format('D') %></span>
-      <span class="date-month"><%= moment(date_created).format('MMM') %></span>
-    </div>
-    <div class="tab-icon post "></div>        
-      <div class="posted-by">    
-        <img class="post-author-picture pull-left" src="<%= posted_by.picture ? posted_by.picture : '{% static 'cmsplugin_socialschools/css/img/unknown.png' %}' %>">    
-      </div>
-  </div>
-  <% if (event){ %>
-  <div class="tab-icon event "></div>
-  <% } %>
-  <div class="tab-icon news "></div>
-    <div class="content"> 
-      <div class="postedin">
-        Gepost in: <span><%= _community_name %></span>
-      </div>
-      <ul class="tools">    
-      </ul>
-      <div class="item-heading">
-        <div class="item-title">
-        <h1 data-skip="true"><%= title %></h1>
-        <p>
-          <% print(posted_by.first_name + ' ' + posted_by.last_name) %>
-        </p>
-      </div>
-    </div>
-       <div class="item-body">
-      <% if (event){ %>
-      <p>
-      Locatie: <%= event.location %> <br>
-      Aanvang: <span class="date"><%= moment(event.start_date).format('LL H:mm') %></span><br>
-      Geplande eindtijd <span class="date"><%= moment(event.end_date).format('LL H:mm') %></span><br>
-      </p>
-      <% } %>
-      {% if !instance.only_photos %}
-      <p data-meaningful="true" ct-id="4">
-        <%= description %>
-      </p>
-      {% endif %}
 
-  </div>
-  <div class="post-photos-container gallery clearfix" data-toggle="modal-gallery" data-target="#modal-gallery">
-  </div>
-    <div class="post-videos-container">
+{% autoescape off %}
+<div class="post clearfix">
+    <div class="post-labels">
+        <% if (event){ %>
+            <div class="post-label-type post-color-event">
+                <icon class="icon-calendar icon-white"></icon>
+            </div>
+        <% } else { %>
+            <div class="post-label-type post-color-comment">
+                <icon class="icon-comment icon-white"></icon>
+            </div>
+        <% } %>
     </div>
-    <div class="clear"></div>
-    <br>
-    <div class="clear"></div>
-  </div>
-</aside>
-{% endif %}
+
+    <!-- Post body -->
+    <% if (event){ %>
+        <div class="post-body post-body-color-event">
+    <% } else { %>
+        <div class="post-body post-body-color-comment">
+    <% } %>
+        <div class="post-message-container">
+            <div class="clearfix">
+                <img class="post-author-picture pull-left" src="<%= posted_by.picture ? posted_by.picture : '{% static 'cmsplugin_socialschools/css/img/unknown.png' %}' %>">
+            <div class="post-meta pull-left">
+                <% print(posted_by.first_name + ' ' + posted_by.last_name) %> <span class="meta-info">{% trans 'in' %}</span> <%= _community_name %>
+                <br>
+                <span class="meta-info">
+                    {% trans 'on (adverb)' %}
+                    <%= moment(date_created).format('LL') %>
+                </span>
+            </div>
+            </div>
+            <hr>
+            <h2 class="post-header"><%= title %></h2>
+            <div class="post-description">
+                <p><%= description %></p>
+            </div>
+            <% if (event){ %>
+                <div class="row-fluid">
+                    <div class="event-icon">
+                        <div class="event-icon-month">
+                            <%= moment(event.start_date).format('MMM') %>
+                        </div>
+                        <div class="event-icon-day">
+                            <p class="event-icon-day-number"><%= moment(event.start_date).format('DD') %></p>
+                            <span><%= moment(event.start_date).format('dddd') %></span>
+                        </div>
+                    </div>
+                    <div class="event-details">
+                    <p class="event-location meta-info"><icon class="icon-map-marker"></icon> <%= event.location %> </p>
+                    <p class="event-multiday-time meta-info"><span class="meta-info">{% trans 'Starts' %}</span> &nbsp;<strong><%= moment(event.start_date).format('LL H:mm') %></strong></p>
+                    <p class="event-multiday-time meta-info"><span class="meta-info">{% trans 'Ends' %}</span> &nbsp;<strong><%= moment(event.end_date).format('LL H:mm') %></strong></p>
+                    </div>
+                </div>
+            <% } %>
+            <div class="post-photos-container gallery clearfix" data-toggle="modal-gallery" data-target="#modal-gallery">
+            </div>
+            <div class="post-videos-container">
+            </div>
+<!--             <div class="post-comments-container">
+            </div> -->
+        </div>
+    </div>
+</div>
 {% endautoescape %}
