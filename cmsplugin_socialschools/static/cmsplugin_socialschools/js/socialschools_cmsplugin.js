@@ -5,6 +5,7 @@ var videoTemplate = _.template($('#video-template').html());
 var newsTemplate = _.template($('#news-template').html());
 var pubPhotoTemplate = _.template($('#pub-photo-template').html());
 var singlePubPhotoTemplate = _.template($('#single-pub-photo-template').html());
+var newsPhotoTemplate = _.template($('#news-photo-template').html());
 
 /**
  * [renderNews Render News headers]
@@ -19,7 +20,10 @@ function renderNews(selector, posts) {
     var newsHtml = newsTemplate(post),
         $post = $(document.createElement('div'));
     $post.html(newsHtml);
-    $(selector).find('.news').append($post);     
+    $(selector).find('.news').append($post);
+    post.getPhotos(function (photos) {
+          renderNewsPhotos($post, photos);
+    });
   });
   $(".inline").colorbox({inline:true, width:"80%"});
 }
@@ -37,6 +41,15 @@ function renderPhotos($post, photos) {
     $post.find('.post-photos-container').append(photoHtml);
   });
 }
+
+function renderNewsPhotos($post, photos) {
+  'use strict';
+  _.each(photos.objects, function (photo) {
+    var photoHTML = newsPhotoTemplate(photo);
+    $post.find('.news-photos-container').append(photoHTML);
+  });
+}
+
 
 /**
  * [renderVideos Render videos in the posts]
