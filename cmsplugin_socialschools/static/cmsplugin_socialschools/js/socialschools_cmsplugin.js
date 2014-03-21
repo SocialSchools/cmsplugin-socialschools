@@ -49,7 +49,7 @@ function renderVideos($post, videos) {
     var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
     match = video.url.match(regExp);
     if (match && match[7].length === 11) {
-      var iframe = $('<div class="video-thumbnail"><iframe width="560" height="315" src="//www.youtube.com/embed/' + match[7] +'" frameborder="0" allowfullscreen></iframe></div>');
+      var iframe = $('<div class="video-thumbnail"><iframe width="380" height="315" src="//www.youtube.com/embed/' + match[7] +'" frameborder="0" allowfullscreen></iframe></div>');
       $post.find('.post-videos-container').append(iframe);
     }
     else {
