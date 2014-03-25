@@ -81,7 +81,7 @@ function renderVideos($post, videos) {
 function renderPublicPhotos(selector, photos) {
   'use strict';
   $(selector).find('.css-pub-container').empty();
-  _.each(photos.objects, function (photo) {
+  _.each(photos.objects.reverse(), function (photo) {
     var photoHTML = pubPhotoTemplate(photo);
       $(selector).find('.content-pub-photo').append(photoHTML);
   });
