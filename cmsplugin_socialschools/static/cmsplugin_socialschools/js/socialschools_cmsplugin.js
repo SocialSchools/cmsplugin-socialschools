@@ -7,12 +7,7 @@ var pubPhotoTemplate = _.template($('#pub-photo-template').html());
 var singlePubPhotoTemplate = _.template($('#single-pub-photo-template').html());
 var newsPhotoTemplate = _.template($('#news-photo-template').html());
 
-/**
- * [renderNews Render News headers]
- * @param  {[type]} selector [description]
- * @param  {[type]} posts    [description]
- * @return {[type]}          [description]
- */
+
 function renderNews(selector, posts) {
  'use strict';
   $(selector).find('.css-posts-content').empty();
@@ -28,19 +23,26 @@ function renderNews(selector, posts) {
   $(".inline").colorbox({inline:true, width:"80%"});
 }
 
-/**
- * [renderPhotos Render photos in the posts]
- * @param  {[type]} $post  [description]
- * @param  {[type]} photos [description]
- * @return {[type]}        [description]
- */
+
 function renderPhotos($post, photos) {
   'use strict';
   _.each(photos.objects, function (photo) {
     var photoHtml = photoTemplate(photo);
     $post.find('.post-photos-container').append(photoHtml);
   });
-}
+  if (!photos.nextUrl) {
+      $post.find('a.css-photos-next-page').hide();
+  }
+  // show more button when there are more than 10 photos
+  if (photos.nextUrl) {
+    $('a.css-photos-next-page').click(function () {
+         photos.getNextPage(function (photos) {
+          renderPhotos($post, photos);
+         });
+       });
+    }
+  }
+
 
 function renderNewsPhotos($post, photos) {
   'use strict';
@@ -51,12 +53,6 @@ function renderNewsPhotos($post, photos) {
 }
 
 
-/**
- * [renderVideos Render videos in the posts]
- * @param  {[type]} $post  [description]
- * @param  {[type]} videos [description]
- * @return {[type]}        [description]
- */
 function renderVideos($post, videos) {
   _.each(videos.objects, function (video) {
     var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
@@ -72,12 +68,7 @@ function renderVideos($post, videos) {
   });
 }
 
-/**
- * [renderPublicPhotos Render public photos from a community]
- * @param  {[type]} selector [description]
- * @param  {[type]} photos   [description]
- * @return {[type]}          [description]
- */
+
 function renderPublicPhotos(selector, photos) {
   'use strict';
   $(selector).find('.css-pub-container').empty();
@@ -90,17 +81,12 @@ function renderPublicPhotos(selector, photos) {
   $(selector).find('.single-photo-container').append(singlePhotoHTML);
   if ($('.content-pub-photo').children()) {
     $('.content-pub-photo').children()[1].innerText = "alle foto's bekijken";
-    // fix for firefox 
+    // fix for firefox
     $('.content-pub-photo').children()[1].textContent = "alle foto's bekijken";
   }
 }
 
-/**
- * [renderPosts Render public posts from a community]
- * @param  {[type]} selector [description]
- * @param  {[type]} posts    [description]
- * @return {[type]}          [description]
- */
+
 function renderPosts(selector, posts) {
   'use strict';
   //$(selector).find('.css-posts-content').empty();
@@ -112,7 +98,7 @@ function renderPosts(selector, posts) {
 
       // post.getComments(function (comments) {
       //     renderComments($post, comments);
-      // });  
+      // });
       post.getPhotos(function (photos) {
           renderPhotos($post, photos);
       });
@@ -124,13 +110,13 @@ function renderPosts(selector, posts) {
       }
     });
     $(function () {
-    // Render in column1 of news template   
+    // Render in column1 of news template
       $('#column1 > .news').paginate({
         url : function(el) {return '?type=news&offset='+($(el).children().length)},
         onrequest : function () {
           posts.getNextPage(function (posts) {
-            //$(selector).find('.css-posts-content').empty(); 
-            // not emptying the 
+            //$(selector).find('.css-posts-content').empty();
+            // not emptying the
             _.each(posts.objects, function (post) {
               var postHtml = postTemplate(post),
               $post = $(document.createElement('div'));
@@ -139,7 +125,7 @@ function renderPosts(selector, posts) {
 
               // post.getComments(function (comments) {
               //     renderComments($post, comments);
-              // });  
+              // });
               post.getPhotos(function (photos) {
                 renderPhotos($post, photos);
               });
@@ -160,8 +146,8 @@ function renderPosts(selector, posts) {
         url : function(el) {return '?type=news&offset='+($(el).children().length)},
         onrequest : function () {
           posts.getNextPage(function (posts) {
-            //$(selector).find('.css-posts-content').empty(); 
-            // not emptying the 
+            //$(selector).find('.css-posts-content').empty();
+            // not emptying the
             _.each(posts.objects, function (post) {
               var postHtml = postTemplate(post),
               $post = $(document.createElement('div'));
@@ -170,7 +156,7 @@ function renderPosts(selector, posts) {
 
               // post.getComments(function (comments) {
               //     renderComments($post, comments);
-              // });  
+              // });
               post.getPhotos(function (photos) {
                 renderPhotos($post, photos);
               });
@@ -190,8 +176,13 @@ function renderPosts(selector, posts) {
   });
 }
 
-
-
+ $(function () {
+  $('.load-more-photos').click(function (e) {
+    photos.getNextPage(function (photos) {
+      renderPhotos($post, photos);
+    });
+  });
+});
 // function renderComments($post, comments) {
 //     'use strict';
 //     _.each(comments.objects, function (comment) {
