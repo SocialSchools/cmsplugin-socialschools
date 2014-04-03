@@ -1,23 +1,26 @@
 var postTemplate = _.template($('#post-template').html());
-var commentTemplate = _.template($('#comment-template').html());
 var photoTemplate = _.template($('#photo-template').html());
 var videoTemplate = _.template($('#video-template').html());
-var newsTemplate = _.template($('#news-template').html());
 var pubPhotoTemplate = _.template($('#pub-photo-template').html());
 var singlePubPhotoTemplate = _.template($('#single-pub-photo-template').html());
+var newsTemplate = _.template($('#news-template').html());
 var newsPhotoTemplate = _.template($('#news-photo-template').html());
 
 
 function renderNews(selector, posts) {
+  // renders news headlines which on click opens a colorbox which post
+  // and pictures in it.
  'use strict';
+  // make sure the container in empty.
   $(selector).find('.css-posts-content').empty();
   _.each(posts.objects, function (post) {
     var newsHtml = newsTemplate(post),
         $post = $(document.createElement('div'));
     $post.html(newsHtml);
     $(selector).find('.news').append($post);
+    // render images in the news colorbox
     post.getPhotos(function (photos) {
-          renderNewsPhotos($post, photos);
+      renderNewsPhotos($post, photos);
     });
   });
   $(".inline").colorbox({inline:true, width:"80%"});
@@ -26,25 +29,19 @@ function renderNews(selector, posts) {
 
 function renderPhotos($post, photos) {
   'use strict';
+  // renders photos from a post.
   _.each(photos.objects, function (photo) {
     var photoHtml = photoTemplate(photo);
     $post.find('.post-photos-container').append(photoHtml);
   });
-  if (!photos.nextUrl) {
-      $post.find('a.css-photos-next-page').hide();
-  }
-  // show more button when there are more than 10 photos
-  if (photos.nextUrl) {
-    $('a.css-photos-next-page').click(function () {
-         photos.getNextPage(function (photos) {
-          renderPhotos($post, photos);
-         });
-       });
-    }
-  }
+  
+}
 
 
 function renderNewsPhotos($post, photos) {
+  // helper function to render News photos
+  // this is made seperate as the images don't have link here
+  // like in lightbox style normal photos.
   'use strict';
   _.each(photos.objects, function (photo) {
     var photoHTML = newsPhotoTemplate(photo);
@@ -54,6 +51,7 @@ function renderNewsPhotos($post, photos) {
 
 
 function renderVideos($post, videos) {
+  // render youtube Videos here
   _.each(videos.objects, function (video) {
     var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
     match = video.url.match(regExp);
@@ -71,14 +69,18 @@ function renderVideos($post, videos) {
 
 function renderPublicPhotos(selector, photos) {
   'use strict';
+  // It renders the images from public images 
+  // of a community using public image API.
   $(selector).find('.css-pub-container').empty();
-  _.each(photos.objects.reverse(), function (photo) {
+  _.each(photos.objects, function (photo) {
     var photoHTML = pubPhotoTemplate(photo);
       $(selector).find('.content-pub-photo').append(photoHTML);
   });
+  // For Single public image.
   var photo = photos.objects[0];
   var singlePhotoHTML = singlePubPhotoTemplate(photo);
   $(selector).find('.single-photo-container').append(singlePhotoHTML);
+  // Add a bottom link for lightbox display of other images in the album.
   if ($('.content-pub-photo').children()) {
     $('.content-pub-photo').children()[1].innerText = "alle foto's bekijken";
     // fix for firefox
@@ -89,26 +91,35 @@ function renderPublicPhotos(selector, photos) {
 
 function renderPosts(selector, posts) {
   'use strict';
+  // Display posts
   //$(selector).find('.css-posts-content').empty();
   _.each(posts.objects, function (post) {
       var postHtml = postTemplate(post),
           $post = $(document.createElement('div'));
       $post.html(postHtml);
       $(selector).find('.css-posts-content').append($post);
-
-      // post.getComments(function (comments) {
-      //     renderComments($post, comments);
-      // });
+      // Render photos in the post
       post.getPhotos(function (photos) {
-          renderPhotos($post, photos);
+        renderPhotos($post, photos);
+        console.log(photos.nextUrl);
+        if (!photos.nextUrl) $('.'+ post.id + '-css-photos-next-page').hide();
+        //console.log('.'+ post.id + '-css-photos-next-page');
+        $('.'+ post.id + '-css-photos-next-page').click(function () {
+          photos.getNextPage(function (photos) {
+            renderPhotos($post, photos);
+            //hide the load more button if there is no nextUrl
+            if (!photos.nextUrl) $('.'+ post.id + '-css-photos-next-page').hide();
+          });
+        });
       });
-
+      // Render Videos if any in the post
       if (post._video_count) {
-          post.getVideos(function (videos) {
+        post.getVideos(function (videos) {
           renderVideos($post, videos);
-      });
+        });
       }
     });
+
     $(function () {
     // Render in column1 of news template
       $('#column1 > .news').paginate({
@@ -176,13 +187,13 @@ function renderPosts(selector, posts) {
   });
 }
 
- $(function () {
-  $('.load-more-photos').click(function (e) {
-    photos.getNextPage(function (photos) {
-      renderPhotos($post, photos);
-    });
-  });
-});
+//  $(function () {
+//   $('.load-more-photos').click(function (e) {
+//     photos.getNextPage(function (photos) {
+//       renderPhotos($post, photos);
+//     });
+//   });
+// });
 // function renderComments($post, comments) {
 //     'use strict';
 //     _.each(comments.objects, function (comment) {

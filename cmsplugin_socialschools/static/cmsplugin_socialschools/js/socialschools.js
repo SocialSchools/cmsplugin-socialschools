@@ -21,44 +21,45 @@
 
     function Collection(ModelClass) {
       return function () {
-        var that = this;
+        var self = this;
         this.objects = [];
 
         this.add = function (data) {
           for(var object in data.results) {
-            that.objects.push(new ModelClass(data.results[object]));
+            self.objects.push(new ModelClass(data.results[object]));
           }
-          that.nextUrl = data.next;
-          that.prevUrl = data.previous;
+          self.nextUrl = data.next;
+          self.prevUrl = data.previous;
+          return self;
         };
 
         this.getFromUrl = function(url, options, callback) {
-          that.ajax = $.ajax({
+          self.ajax = $.ajax({
             dataType: 'jsonp',
             url: url,
             data: options,
             success: function (data) {
-              that.add(data);
+              self.add(data);
               if (callback) {
-                callback(that);
+                callback(self);
               }
             }
           });
-          return that;
+          return self;
         };
 
         this.getPreviousPage =  function (callback) {
-          if(!that.prevUrl) {
+          if(!self.prevUrl) {
             return this;
           }
-          return (new this.constructor()).getFromUrl(that.prevUrl, undefined, callback);
+          return (new this.constructor()).getFromUrl(self.prevUrl, undefined, callback);
         };
 
         this.getNextPage =  function (callback) {
-          if(!that.nextUrl) {
+          if(!self.nextUrl) {
             return this;
           }
-          return (new this.constructor()).getFromUrl(that.nextUrl, undefined, callback);
+          return (new this.constructor()).getFromUrl(this.nextUrl, undefined, callback);
         };
       };
     }
@@ -84,6 +85,7 @@
     };
 
     Post.prototype.getPhotos = function (callback) {
+      var url = this.nextUrl;
       return (new PhotosCollection()).getFromUrl(this.photos, undefined, callback);
     };
 
@@ -103,3 +105,4 @@
 
     window.Socialschools = Socialschools;
 }());
+
