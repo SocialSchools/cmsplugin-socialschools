@@ -7,6 +7,15 @@ var newsTemplate = _.template($('#news-template').html());
 var newsPhotoTemplate = _.template($('#news-photo-template').html());
 
 
+// Helper function to urlify links in the text.
+function urlify(text) {
+    var urlRegex = /(https?:\/\/[^\s]+)/g;
+    return text.replace(urlRegex, function(url) {
+      return text.replace(urlRegex, '<a href="$1" target="_blank">$1</a>');
+    })  
+}
+
+
 function renderNews(selector, posts) {
   // renders news headlines which on click opens a colorbox which post
   // and pictures in it.
@@ -14,6 +23,8 @@ function renderNews(selector, posts) {
   // make sure the container in empty.
   $(selector).find('.css-posts-content').empty();
   _.each(posts.objects, function (post) {
+    var description_urlify = urlify(post.description);
+    post.description = description_urlify;
     var newsHtml = newsTemplate(post),
         $post = $(document.createElement('div'));
     $post.html(newsHtml);
@@ -94,6 +105,8 @@ function renderPosts(selector, posts) {
   // Display posts
   //$(selector).find('.css-posts-content').empty();
   _.each(posts.objects, function (post) {
+      var description_urlify = urlify(post.description);
+      post.description = description_urlify;
       var postHtml = postTemplate(post),
           $post = $(document.createElement('div'));
       $post.html(postHtml);
@@ -128,6 +141,8 @@ function renderPosts(selector, posts) {
             //$(selector).find('.css-posts-content').empty();
             // not emptying the
             _.each(posts.objects, function (post) {
+              var description_urlify = urlify(post.description);
+              post.description = description_urlify;
               var postHtml = postTemplate(post),
               $post = $(document.createElement('div'));
               $post.html(postHtml);
@@ -169,6 +184,8 @@ function renderPosts(selector, posts) {
             //$(selector).find('.css-posts-content').empty();
             // not emptying the
             _.each(posts.objects, function (post) {
+              var description_urlify = urlify(post.description);
+              post.description = description_urlify;
               var postHtml = postTemplate(post),
               $post = $(document.createElement('div'));
               $post.html(postHtml);
