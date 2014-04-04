@@ -101,7 +101,6 @@ function renderPosts(selector, posts) {
       // Render photos in the post
       post.getPhotos(function (photos) {
         renderPhotos($post, photos);
-        console.log(photos.nextUrl);
         if (!photos.nextUrl) $('.'+ post.id + '-css-photos-next-page').hide();
         //console.log('.'+ post.id + '-css-photos-next-page');
         $('.'+ post.id + '-css-photos-next-page').click(function () {
@@ -137,8 +136,18 @@ function renderPosts(selector, posts) {
               // post.getComments(function (comments) {
               //     renderComments($post, comments);
               // });
+              // Render photos in the post
               post.getPhotos(function (photos) {
                 renderPhotos($post, photos);
+                if (!photos.nextUrl) $('.'+ post.id + '-css-photos-next-page').hide();
+                //console.log('.'+ post.id + '-css-photos-next-page');
+                $('.'+ post.id + '-css-photos-next-page').click(function () {
+                  photos.getNextPage(function (photos) {
+                    renderPhotos($post, photos);
+                    //hide the load more button if there is no nextUrl
+                    if (!photos.nextUrl) $('.'+ post.id + '-css-photos-next-page').hide();
+                  });
+                });
               });
               if (post._video_count) {
                 post.getVideos(function (videos) {
@@ -168,8 +177,18 @@ function renderPosts(selector, posts) {
               // post.getComments(function (comments) {
               //     renderComments($post, comments);
               // });
+              // Render photos in the post
               post.getPhotos(function (photos) {
                 renderPhotos($post, photos);
+                if (!photos.nextUrl) $('.'+ post.id + '-css-photos-next-page').hide();
+                //console.log('.'+ post.id + '-css-photos-next-page');
+                $('.'+ post.id + '-css-photos-next-page').click(function () {
+                  photos.getNextPage(function (photos) {
+                    renderPhotos($post, photos);
+                    //hide the load more button if there is no nextUrl
+                    if (!photos.nextUrl) $('.'+ post.id + '-css-photos-next-page').hide();
+                  });
+                });
               });
               if (post._video_count) {
                 post.getVideos(function (videos) {
