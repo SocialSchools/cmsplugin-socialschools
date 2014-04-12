@@ -2,7 +2,7 @@ var postTemplate = _.template($('#post-template').html());
 var commentTemplate = _.template($('#comment-template').html());
 var photoTemplate = _.template($('#photo-template').html());
 var videoTemplate = _.template($('#video-template').html());
-var newsTemplate = _.template($('#news-template').html());
+//var newsTemplate = _.template($('#news-template').html());
 var pubPhotoTemplate = _.template($('#pub-photo-template').html());
 
 /**
