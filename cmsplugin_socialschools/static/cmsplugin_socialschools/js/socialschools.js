@@ -72,7 +72,9 @@
     var Photo = new Model();
     var Video = new Model();
     var PublicPhoto = new Model();
+    var Document = new Model();
 
+    var DocumentCollection = new Collection(Document);
     var CommentsCollection = new Collection(Comment);
     var PostsCollection = new Collection(Post);
     var PhotosCollection = new Collection(Photo);
@@ -85,6 +87,10 @@
 
     Post.prototype.getPhotos = function (callback) {
       return (new PhotosCollection()).getFromUrl(this.photos, undefined, callback);
+    };
+
+    Post.prototype.getDocuments = function (callback) {
+        return (new DocumentCollection()).getFromUrl(this.documents, undefined, callback);
     };
 
     Post.prototype.getVideos = function (callback) {

@@ -11,6 +11,9 @@
 <script id="post-template" type="text/x-handlebars-template">
     {% include "cms_plugins/socialschools/post.html" %}
 </script>
+<script id="document-template" type="text/x-handlebars-template">
+    {% include "cms_plugins/socialschools/document.html" %}
+</script>
 <script id="comment-template" type="text/x-handlebars-template">
     {% include "cms_plugins/socialschools/comment.html" %}
 </script>
@@ -27,7 +30,7 @@
 {% endaddtoblock %}
 
 {# modal-gallery is the modal dialog used for the image gallery #}
-{% addtoblock 'js' %}   
+{% addtoblock 'js' %}
   <div id="modal-gallery" class="modal modal-gallery hide fade" tabindex="-1">
       <div class="modal-header">
           <a class="close" data-dismiss="modal">&times;</a>
@@ -75,8 +78,8 @@
 {% endaddtoblock %}
 
 <div id="cms-instance-{{ instance.id }}">
-  
-  
+
+
   {% if instance.only_headlines %}
   <div class="css-posts-content"></div>
   <aside class="content-block">
@@ -179,16 +182,16 @@
       </ol>
       <script id="pub-photo-template" type="text/x-handlebars-template">
         <div class="item">
-           <img src="<%= picture %>" width="380" height="285">  
+           <img src="<%= picture %>" width="380" height="285">
         </div>
       </script>
-      <div class="carousel-inner content-pub-photo">     
+      <div class="carousel-inner content-pub-photo">
       </div>
       <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
       <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
   </div>
-    
-  </aside> 
+
+  </aside>
 
   {% else %}
   <div class="css-posts-content"></div>

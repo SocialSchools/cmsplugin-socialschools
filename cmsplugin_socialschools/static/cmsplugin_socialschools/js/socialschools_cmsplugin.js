@@ -1,9 +1,42 @@
+var documentTemplate = _.template($('#document-template').html());
 var postTemplate = _.template($('#post-template').html());
 var commentTemplate = _.template($('#comment-template').html());
 var photoTemplate = _.template($('#photo-template').html());
 var videoTemplate = _.template($('#video-template').html());
 //var newsTemplate = _.template($('#news-template').html());
 var pubPhotoTemplate = _.template($('#pub-photo-template').html());
+
+
+
+/**
+ * urlify Utiliy to parse description and return with a link
+ *
+ * @param text
+ * @return
+ */
+function urlify(text) {
+    'use strict';
+    var urlRegex = /(https?:\/\/[^\s]+)/g;
+    return text.replace(urlRegex, '<a href="$1" target="_blank">$1</a>');
+}
+
+/**
+ * renderDocuments Render Documents provided by the api
+ * into the post.
+ *
+ * @param $post
+ * @param documents
+ * @return
+ */
+function renderDocuments($post, documents) {
+    _.each(documents.object, function (document) {
+        var documentFile = document.document_file;
+        // trim the full path to just get filename
+        document.document_file = documentFile.split('/')[4];
+        var documentHtml = documentTemplate(document);
+        $post.find('.post-photos-container').append(documentHtml);
+    });
+}
 
 /**
  * [renderNews Render News headers]
@@ -18,7 +51,7 @@ function renderNews(selector, posts) {
     var newsHtml = newsTemplate(post),
         $post = $(document.createElement('div'));
     $post.html(newsHtml);
-    $(selector).find('.news').append($post);     
+    $(selector).find('.news').append($post);
   });
   $(".inline").colorbox({inline:true, width:"80%"});
 }
@@ -91,14 +124,20 @@ function renderPosts(selector, posts) {
   'use strict';
   //$(selector).find('.css-posts-content').empty();
   _.each(posts.objects, function (post) {
+      var descriptionUrlify = urlify(post.description);
+      post.description = descriptionUrlify;
       var postHtml = postTemplate(post),
           $post = $(document.createElement('div'));
       $post.html(postHtml);
       $(selector).find('.css-posts-content').append($post);
 
+      post.getDocuments(function (documents) {
+        renderDocuments($post, documents);
+      });
+
       // post.getComments(function (comments) {
       //     renderComments($post, comments);
-      // });  
+      // });
       post.getPhotos(function (photos) {
           renderPhotos($post, photos);
       });
