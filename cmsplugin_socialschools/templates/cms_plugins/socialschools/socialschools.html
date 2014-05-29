@@ -1,7 +1,6 @@
 {% load staticfiles %}
 {% load sekizai_tags %}
 {% load i18n %}
-
 {# Separate addtoblocks used so all static stuff only gets rendered once #}
 {% addtoblock 'js' %}
 <script src="{% static 'cmsplugin_socialschools/js/socialschools.js' %}"></script>
@@ -11,6 +10,9 @@
 <script src="{% static 'cmsplugin_socialschools/js/lib/bootstrap-image-gallery.js' %}"></script>
 <script id="post-template" type="text/x-handlebars-template">
     {% include "cms_plugins/socialschools/post.html" %}
+</script>
+<script id="document-template" type="text/x-handlebars-template">
+    {% include "cms_plugins/socialschools/document.html" %}
 </script>
 <script id="comment-template" type="text/x-handlebars-template">
     {% include "cms_plugins/socialschools/comment.html" %}
@@ -29,50 +31,170 @@
 
 {# modal-gallery is the modal dialog used for the image gallery #}
 {% addtoblock 'js' %}
-    <div id="modal-gallery" class="modal modal-gallery hide fade" tabindex="-1">
-        <div class="modal-header">
-            <a class="close" data-dismiss="modal">&times;</a>
-            <h3 class="modal-title"></h3>
-        </div>
-        <div class="modal-body"><div class="modal-image"></div></div>
-        <div class="modal-footer">
-            <a class="btn btn-primary modal-prev"><i class="icon-arrow-left icon-white"></i>{% trans 'Previous' %}</a>
-            <a class="btn btn-primary modal-next">{% trans 'Next' %} <i class="icon-arrow-right icon-white"></i></a>
-            <a class="btn modal-play modal-slideshow" data-slideshow="5000"><i class="icon-play"></i> {% trans 'Slideshow' %}</a>
-            <a class="btn modal-download" target="_blank"><i class="icon-download"></i> {% trans 'Download' %}</a>
-        </div>
-    </div>
+  <div id="modal-gallery" class="modal modal-gallery hide fade" tabindex="-1">
+      <div class="modal-header">
+          <a class="close" data-dismiss="modal">&times;</a>
+          <h3 class="modal-title"></h3>
+      </div>
+      <div class="modal-body"><div class="modal-image"></div></div>
+      <div class="modal-footer">
+          <a class="btn btn-primary modal-prev"><i class="icon-arrow-left icon-white"></i>{% trans 'Previous' %}</a>
+          <a class="btn btn-primary modal-next">{% trans 'Next' %} <i class="icon-arrow-right icon-white"></i></a>
+          <a class="btn modal-play modal-slideshow" data-slideshow="5000"><i class="icon-play"></i> {% trans 'Slideshow' %}</a>
+          <a class="btn modal-download" target="_blank"><i class="icon-download"></i> {% trans 'Download' %}</a>
+      </div>
+  </div>
 {% endaddtoblock %}
 
 
 {% addtoblock 'js' %}
 <script type="text/javascript">
 (function () {
-    var socialschools = new Socialschools('{{ instance.socialschools_url }}');
-    var posts = socialschools.getPublicPosts({{ instance.community_id }}, {
-        {% if instance.only_descendants %}
-            only_descendants: true
-        {% else %}
-            only_descendants: false
-        {% endif %}
-        }, function (posts) {
-            renderPosts('#cms-instance-{{ instance.id }}', posts)
-        });
+  var socialschools = new Socialschools('{{ instance.socialschools_url }}');
+  {% if instance.only_photos %}
+  var publicPhotos = socialschools.getPublicPhotos('{{ instance.community_id }}', undefined, function (photos) {
+    renderPublicPhotos('#cms-instance-{{ instance.id }}', photos);
+  });
+  {% endif %}
+  var posts = socialschools.getPublicPosts({{ instance.community_id }}, {
+    {% if instance.only_descendants %}
+      only_descendants: true
+    {% else %}
+      only_descendants: false
+    {% endif %},
+    {% if instance.number_of_items %}
+      number_of_items: {{ instance.number_of_items }}
+    {% endif %}
+    },
+    function (posts) {
+    {% if instance.only_headlines %}
+      renderNews('#cms-instance-{{ instance.id }}', posts);
+    {% else %}
+      renderPosts('#cms-instance-{{ instance.id }}', posts);
+    {% endif %}
+  });
 }());
 </script>
 {% endaddtoblock %}
 
-
-
 <div id="cms-instance-{{ instance.id }}">
-    <div class="css-posts-content">
+
+
+  {% if instance.only_headlines %}
+  <div class="css-posts-content"></div>
+  <aside class="content-block">
+  <div class="tabbar">
+    <div class="date-icon news-icon magenta">
+    <div class="tab-icon organization"></div>
     </div>
-    <ul class="pager">
-        <li>
-            <a class="css-posts-prev-page" href="">{% trans 'Previous' %}</a>
-        </li>
-        <li>
-             <a class="css-posts-next-page" href="">{% trans 'Next' %}</a>
-        </li>
-    </ul>
+    <div class="content content-news">
+      <h2>{% if instance.news_headlines %} {{ instance.news_headlines }} {% endif %} News</h2>
+      <ul class="news nav">
+        <script id="news-template" type="text/x-handlebars-template">
+         <li class="newsitem"><a href="#<%= id %>" class="inline cboxElement"><%= title %></a></li>
+
+         <div style="display:none">
+              <div id="<%= id %>" class="news-cbox-container">
+                <div class="post clearfix">
+                  <div class="post-labels">
+                      <% if (event){ %>
+                          <div class="post-label-type post-color-event">
+                              <icon class="icon-calendar icon-white"></icon>
+                          </div>
+                      <% } else { %>
+                          <div class="post-label-type post-color-comment">
+                              <icon class="icon-comment icon-white"></icon>
+                          </div>
+                      <% } %>
+                  </div>
+
+                  <!-- Post body -->
+                  <% if (event){ %>
+                      <div class="post-body post-body-color-event">
+                  <% } else { %>
+                      <div class="post-body post-body-color-comment">
+                  <% } %>
+                      <div class="post-message-container">
+                          <div class="clearfix">
+                              <img class="post-author-picture pull-left" src="<%= posted_by.picture ? posted_by.picture : '{% static 'cmsplugin_socialschools/css/img/unknown.png' %}' %>">
+                          <div class="post-meta pull-left">
+                              <% print(posted_by.first_name + ' ' + posted_by.last_name) %> <span class="meta-info">{% trans 'in' %}</span> <%= _community_name %>
+                              <br>
+                              <span class="meta-info">
+                                  {% trans 'on (adverb)' %}
+                                  <%= moment(date_created).format('LL') %>
+                              </span>
+                          </div>
+                          </div>
+                          <hr>
+                          <h2 class="post-header"><%= title %></h2>
+                          <div class="post-description">
+                              <p><%= description %></p>
+                          </div>
+                          <% if (event){ %>
+                              <div class="row-fluid">
+                                  <div class="event-icon">
+                                      <div class="event-icon-month">
+                                          <%= moment(event.start_date).format('MMM') %>
+                                      </div>
+                                      <div class="event-icon-day">
+                                          <p class="event-icon-day-number"><%= moment(event.start_date).format('DD') %></p>
+                                          <span><%= moment(event.start_date).format('dddd') %></span>
+                                      </div>
+                                  </div>
+                                  <div class="event-details">
+                                  <p class="event-location meta-info"><icon class="icon-map-marker"></icon> <%= event.location %> </p>
+                                  <p class="event-multiday-time meta-info"><span class="meta-info">{% trans 'Starts' %}</span> &nbsp;<strong><%= moment(event.start_date).format('LL H:mm') %></strong></p>
+                                  <p class="event-multiday-time meta-info"><span class="meta-info">{% trans 'Ends' %}</span> &nbsp;<strong><%= moment(event.end_date).format('LL H:mm') %></strong></p>
+                                  </div>
+                              </div>
+                          <% } %>
+                          <div class="post-photos-container gallery clearfix" data-toggle="modal-gallery" data-target="#modal-gallery">
+                          </div>
+                          <div class="post-videos-container">
+                          </div>
+              <!--             <div class="post-comments-container">
+                          </div> -->
+                      </div>
+                  </div>
+              </div>
+                            </div>
+         </div>
+
+        </script>
+      </ul>
+    </div>
+  </aside>
+  {% endif %}
+
+
+  {% if instance.only_photos %}
+  <aside class="content-block">
+    <div class="tabbar">
+      <div class="tab-icon photos"></div>
+    </div>
+    <h2>Publieke foto's</h2>
+    <div id="myCarousel" class="carousel slide">
+      <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class=""></li>
+        <li data-target="#myCarousel" data-slide-to="1" class=""></li>
+        <li data-target="#myCarousel" data-slide-to="2" class=""></li>
+      </ol>
+      <script id="pub-photo-template" type="text/x-handlebars-template">
+        <div class="item">
+           <img src="<%= picture %>" width="380" height="285">
+        </div>
+      </script>
+      <div class="carousel-inner content-pub-photo">
+      </div>
+      <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
+      <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
+  </div>
+
+  </aside>
+
+  {% else %}
+  <div class="css-posts-content"></div>
+  <div class="css-post-cont"></div>
+  {% endif %}
 </div>
