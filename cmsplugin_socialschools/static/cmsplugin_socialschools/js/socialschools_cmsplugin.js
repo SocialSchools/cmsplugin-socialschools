@@ -29,7 +29,7 @@ function urlify(text) {
  * @return
  */
 function renderDocuments($post, documents) {
-    _.each(documents.object, function (document) {
+    _.each(documents.objects, function (document) {
         var documentFile = document.document_file;
         // trim the full path to just get filename
         document.document_file = documentFile.split('/')[4];
