@@ -93,8 +93,8 @@
         return (new DocumentCollection()).getFromUrl(this.documents, undefined, callback);
     };
 
-    Post.prototype.getVideos = function (callback) {
-      return (new VideosCollection()).getFromUrl(this.videos, undefined, callback);
+    Post.prototype.getVideos = function () {
+      return this.videos;
     };
 
     Socialschools.prototype.getPublicPosts = function (communityId, options, callback) {

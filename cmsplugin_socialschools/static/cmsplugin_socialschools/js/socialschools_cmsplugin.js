@@ -77,7 +77,7 @@ function renderPhotos($post, photos) {
  * @return {[type]}        [description]
  */
 function renderVideos($post, videos) {
-  _.each(videos.objects, function (video) {
+  _.each(videos, function (video) {
     var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
     match = video.url.match(regExp);
     if (match && match[7].length === 11) {
@@ -142,10 +142,8 @@ function renderPosts(selector, posts) {
           renderPhotos($post, photos);
       });
 
-      if (post._video_count) {
-          post.getVideos(function (videos) {
-          renderVideos($post, videos);
-      });
+      if (post.videos != "") {  
+        renderVideos($post, post.getVideos());
       }
     });
     $(function () {
