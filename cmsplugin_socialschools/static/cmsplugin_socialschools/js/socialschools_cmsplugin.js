@@ -105,17 +105,19 @@ function renderPosts(selector, posts) {
       } else {
         $(selector).find('a.css-posts-prev-page').show();
       }
-      $(selector).find('a.css-posts-next-page').off('click').on('click', function (e) {
+      // fix pagination
+      $('a.css-posts-next-page').on('click', function (e) {
         e.preventDefault();
         posts.getNextPage(function (posts) {
-            renderPosts(selector, posts);
+          renderPosts(selector, posts);
         });
       });
-      $(selector).find('a.css-posts-prev-page').off('click').on('click', function (e) {
+      $('a.css-posts-prev-page').on('click', function (e) {
         e.preventDefault();
         posts.getPreviousPage(function (posts) {
           renderPosts(selector, posts);
         });
       });
+
     });
 }
