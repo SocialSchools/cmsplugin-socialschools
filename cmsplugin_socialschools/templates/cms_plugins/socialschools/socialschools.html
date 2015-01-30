@@ -1,6 +1,7 @@
 {% load staticfiles %}
 {% load sekizai_tags %}
 {% load i18n %}
+{% load compress %}
 {# Separate addtoblocks used so all static stuff only gets rendered once #}
 {% addtoblock 'js' %}
 <script src="{% static 'cmsplugin_socialschools/js/socialschools.js' %}"></script>
@@ -16,6 +17,9 @@
 </script>
 <script id="document-template" type="text/x-handlebars-template">
     {% include "cms_plugins/socialschools/document.html" %}
+</script>
+<script id="comment-template" type="text/x-handlebars-template">
+    <div id="comment"></div>
 </script>
 <script id="photo-template" type="text/x-handlebars-template">
     {% include "cms_plugins/socialschools/photo.html" %}
@@ -123,10 +127,7 @@
   <div class="css-posts-content"></div>
   <div class="css-post-cont"></div>
   {% endif %}
-</div>
-<div id="cms-instance-{{ instance.id }}">
-  <div class="css-posts-content">
-  </div>
+
   <ul class="pager">
       <li>
           <a class="css-posts-prev-page" href="">{% trans 'Previous' %}</a>
@@ -136,3 +137,4 @@
       </li>
   </ul>
 </div>
+
