@@ -34,6 +34,11 @@ function renderNews(selector, posts) {
   $(".inline").colorbox({inline:true, width:"80%"});
 }
 
+function renderNewsWithThumb(selector, posts) {
+  // add the new compact newsfeed with thumbnails 
+  // photos
+}
+
 function renderPhotos($post, photos) {
   _.each(photos.objects, function (photo) {
     var photoHtml = photoTemplate(photo);

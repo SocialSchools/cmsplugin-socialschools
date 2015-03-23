@@ -9,4 +9,5 @@ class SocialSchools(CMSPlugin):
     only_headlines = models.BooleanField()
     only_photos = models.BooleanField()
     news_headlines = models.CharField(max_length=125, null=True, blank=True)
+    headlines_with_thumbnails = models.BooleanField(_('Only headlines and thumbnails'))
     number_of_items = models.IntegerField(_('Number of items to show'), blank=True, null=True)
