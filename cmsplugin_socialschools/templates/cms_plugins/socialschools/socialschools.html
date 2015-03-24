@@ -26,6 +26,10 @@
 <script id="pub-photo-template" type="text/x-handlebars-template">
     {% include "cms_plugins/socialschools/pubphoto.html" %}
 </script>
+<script id="news-thumb-template" type="text/x-handlebars-template">
+    {% include "cms_plugins/socialschools/newsthumb.html" %}
+</script>
+
 <script src="{% static 'cmsplugin_socialschools/js/socialschools_cmsplugin.js' %}"></script>
 <script type="text/javascript">
     moment.lang('{{LANGUAGE_CODE}}');
@@ -97,7 +101,21 @@
     </div>
   </aside>
   {% endif %}
-
+  {% if instance.headlines_with_thumbnails %}
+    <div class="css-posts-content"></div>
+      <aside class="content-block">
+      <div class="tabbar">
+        <div class="date-icon news-icon magenta">
+        <div class="tab-icon organization"></div>
+        </div>
+        <div class="content content-news">
+          <h2>{% if instance.news_headlines %} {{ instance.news_headlines }} {% endif %} News</h2>
+          <ul class="news-thumb nav">
+          </ul>
+        </div>
+      </aside>
+  {% endif %}
+ 
 
   {% if instance.only_photos %}
   <aside class="content-block">

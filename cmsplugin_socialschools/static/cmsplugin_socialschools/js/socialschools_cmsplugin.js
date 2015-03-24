@@ -6,7 +6,7 @@ var postTemplate = _.template($('#post-template').html());
 var photoTemplate = _.template($('#photo-template').html());
 var newsTemplate = _.template($('#news-template').html());
 var pubPhotoTemplate = _.template($('#pub-photo-template').html());
-
+var newsThumbTemplate = _.template($('#news-thumb-template').html());
 
 function urlify(text) {
     var urlRegex = /(https?:\/\/[^\s]+)/g;
@@ -37,6 +37,13 @@ function renderNews(selector, posts) {
 function renderNewsWithThumb(selector, posts) {
   // add the new compact newsfeed with thumbnails 
   // photos
+  $(selector).find('.css-posts-content').empty();
+  _.each(posts.objects, function (post) {
+    var newsHtml = newsThumbTemplate(post),
+        $post = $(document.createElement('div'));
+    $post.html(newsHtml);
+    $(selector).find('.news-thumb').append($post);
+  });
 }
 
 function renderPhotos($post, photos) {
