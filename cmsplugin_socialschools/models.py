@@ -4,7 +4,7 @@ from django.db import models
 
 class SocialSchools(CMSPlugin):
     socialschools_url = models.CharField(help_text=_(u"the url to your socialschools environment, e.g. https://desocialschools.socialschools.nl"), max_length=125)
-    community_id = models.IntegerField(help_text=_(u"the ID (number) of the community you want to display public posts of. You can find this number in the addressbar when you navigate to the community page. E.g. the ID of https:desocialschool.socialschools.nl/communities/306 is 306"))
+    community_id = models.IntegerField(help_text=_(u"the ID (number) of the community you want to display public posts of. You can find this number in the addressbar when you navigate to the community page. E.g. the ID of https://desocialschool.socialschools.nl/communities/306 is 306"))
     only_descendants = models.BooleanField(help_text=_(u"This option will show public posts from any descendant community of the selected community."))
     only_headlines = models.BooleanField(help_text=_(u"This option will show  only headlines instead of full posts."))
     only_photos = models.BooleanField(help_text=_(u"This option will show only the images from the most recent published posts in a carousel"))
