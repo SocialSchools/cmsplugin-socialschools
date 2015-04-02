@@ -1,0 +1,28 @@
+<aside class="content-block"> 
+  <div class="tabbar">
+
+    <div class="tab-icon organization"></div>
+  </div>
+
+  <div class="content">
+      <div class="row-fluid well">
+        <div class="span6">
+         <h2><%= title %></h2>
+          <div class="date-icon magenta">
+            <span class="date-day"><%= moment(date_created).format('D') %></span>
+            <span class="date-month"><%= moment(date_created).format('MMM') %></span>
+          </div>
+          
+        </div>
+        <div class="span6">
+          <% if (_first_photo)  {%>
+            <div>
+              <img src="<%= _first_photo %>" alt="first-image" class="pull-right post-first-photo">
+            </div>
+          <% } %>
+
+        </div>
+      </div>
+     
+        </div>
+</aside>

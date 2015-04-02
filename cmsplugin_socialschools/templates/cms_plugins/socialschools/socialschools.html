@@ -17,6 +17,9 @@
 <script id="document-template" type="text/x-handlebars-template">
     {% include "cms_plugins/socialschools/document.html" %}
 </script>
+<script id="comment-template" type="text/x-handlebars-template">
+    <div id="comment"></div>
+</script>
 <script id="photo-template" type="text/x-handlebars-template">
     {% include "cms_plugins/socialschools/photo.html" %}
 </script>
@@ -25,6 +28,9 @@
 </script>
 <script id="pub-photo-template" type="text/x-handlebars-template">
     {% include "cms_plugins/socialschools/pubphoto.html" %}
+</script>
+<script id="news-thumb-template" type="text/x-handlebars-template">
+    {% include "cms_plugins/socialschools/newsthumb.html" %}
 </script>
 <script src="{% static 'cmsplugin_socialschools/js/socialschools_cmsplugin.js' %}"></script>
 <script type="text/javascript">
@@ -72,6 +78,8 @@
     function (posts) {
     {% if instance.only_headlines %}
       renderNews('#cms-instance-{{ instance.id }}', posts);
+    {% elif instance.headlines_with_thumbnails %}
+      renderNewsWithThumb('#cms-instance-{{ instance.id}}', posts);
     {% else %}
       renderPosts('#cms-instance-{{ instance.id }}', posts);
     {% endif %}
@@ -98,6 +106,20 @@
   </aside>
   {% endif %}
 
+  {% if instance.headlines_with_thumbnails %}
+    <div class="css-posts-content"></div>
+      <aside class="content-block">
+      <div class="tabbar">
+        <div class="date-icon news-icon magenta">
+        <div class="tab-icon organization"></div>
+        </div>
+        <div class="content content-news">
+          <ul class="news-thumb nav">
+          </ul>
+        </div>
+      </aside>
+  {% endif %}
+  
 
   {% if instance.only_photos %}
   <aside class="content-block">
@@ -123,10 +145,7 @@
   <div class="css-posts-content"></div>
   <div class="css-post-cont"></div>
   {% endif %}
-</div>
-<div id="cms-instance-{{ instance.id }}">
-  <div class="css-posts-content">
-  </div>
+
   <ul class="pager">
       <li>
           <a class="css-posts-prev-page" href="">{% trans 'Previous' %}</a>
@@ -136,3 +155,4 @@
       </li>
   </ul>
 </div>
+
