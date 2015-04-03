@@ -107,16 +107,18 @@ function renderPosts(selector, posts) {
       }
     });
     $(function () {
-      if (!posts.nextUrl) {
-        $(selector).find('a.css-posts-next-page').hide();
-      } else {
+      if (posts.nextUrl) {
         $(selector).find('a.css-posts-next-page').show();
-      }
-      if (!posts.prevUrl) {
-        $(selector).find('a.css-posts-prev-page').hide();
       } else {
-        $(selector).find('a.css-posts-prev-page').show();
+        $(selector).find('a.css-posts-next-page').hide();
       }
+
+      if (posts.prevUrl) {
+        $(selector).find('a.css-posts-prev-page').show();
+      } else {
+        $(selector).find('a.css-posts-prev-page').hide();
+      }
+
       // fix pagination
       $('a.css-posts-next-page').on('click', function (e) {
         e.preventDefault();
@@ -130,6 +132,5 @@ function renderPosts(selector, posts) {
           renderPosts(selector, posts);
         });
       });
-
     });
 }
