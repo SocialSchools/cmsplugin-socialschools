@@ -7,6 +7,8 @@ var photoTemplate = _.template($('#photo-template').html());
 var newsTemplate = _.template($('#news-template').html());
 var pubPhotoTemplate = _.template($('#pub-photo-template').html());
 var newsThumbTemplate = _.template($('#news-thumb-template').html());
+var newsPhotoTemplate = _.template($('#news-photo-template').html());
+
 
 function urlify(text) {
     var urlRegex = /(https?:\/\/[^\s]+)/g;
@@ -34,16 +36,35 @@ function renderNews(selector, posts) {
   $(".inline").colorbox({inline:true, width:"80%"});
 }
 
+function renderNewsPhotos($post, photos) {
+  // helper function to render News photos
+  // this is made seperate as the images don't have link here
+  // like in lightbox style normal photos.
+  'use strict';
+  _.each(photos.objects, function (photo) {
+    var photoHTML = newsPhotoTemplate(photo);
+    $post.find('.news-photos-container').append(photoHTML);
+  });
+}
+
+
 function renderNewsWithThumb(selector, posts) {
   // add the new compact newsfeed with thumbnails 
   // photos
   $(selector).find('.css-posts-content').empty();
   _.each(posts.objects, function (post) {
+    var description_urlify = urlify(post.description);
+    post.description = description_urlify;
     var newsHtml = newsThumbTemplate(post),
         $post = $(document.createElement('div'));
     $post.html(newsHtml);
     $(selector).find('.news-thumb').append($post);
+    // render images in the news colorbox
+    post.getPhotos(function (photos) {
+      renderNewsPhotos($post, photos);
+    });
   });
+  $(".inline").colorbox({inline:true, width:"80%"});
 }
 
 function renderPhotos($post, photos) {
