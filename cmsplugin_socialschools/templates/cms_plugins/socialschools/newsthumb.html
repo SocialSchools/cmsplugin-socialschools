@@ -1,28 +1,90 @@
-<aside class="content-block"> 
-  <div class="tabbar">
-
-    <div class="tab-icon organization"></div>
-  </div>
-
+{% load i18n %}
+{% load staticfiles %}
+<aside class="content-block">
   <div class="content">
-      <div class="row-fluid well">
-        <div class="span6">
-         <h2><%= title %></h2>
-          <div class="date-icon magenta">
-            <span class="date-day"><%= moment(date_created).format('D') %></span>
-            <span class="date-month"><%= moment(date_created).format('MMM') %></span>
-          </div>
-          
+    <div class="row-fluid news-thumbnail">
+      <div class="span9 news-thumbnail-title">
+        <h3><a href="#<%= id %>" class="inline cboxElement"><%= title %></a></h3>
+        <div class="date-icon magenta">
+          <span class="meta-info"><%= moment(date_created).format('D') %></span>
+          <span class="meta-info"><%= moment(date_created).format('MMM') %></span>
+          <span class="meta-info">| <%= _community_name %></span>
         </div>
-        <div class="span6">
-          <% if (_first_photo)  {%>
+      </div>
+      <div class="span3 news-thumbnail-thumb">
+        <% if (event){ %>
+            <div class="row-fluid">
+              <div class="event-icon pull-right">
+                <div class="event-icon-month">
+                  <%= moment(event.start_date).format('MMM') %>
+                </div>
+                <div class="event-icon-day">
+                  <p class="event-icon-day-number"><%= moment(event.start_date).format('DD') %></p>
+                  <span class="event-icon-day-name"><%= moment(event.start_date).format('dddd') %></span>
+                </div>
+              </div>
+            </div>
+          <% } else if(_first_photo) { %>
             <div>
               <img src="<%= _first_photo %>" alt="first-image" class="pull-right post-first-photo">
             </div>
           <% } %>
-
-        </div>
       </div>
-     
-        </div>
+    </div>
+  </div>
+  <div style="display:none">
+            <div id="<%= id %>">
+              <aside class="content-block">
+                <div class="tabbar">
+                  <div class="date-icon purple">
+                    <span class="date-day"><%= moment(date_created).format('D') %></span>
+                    <span class="date-month"><%= moment(date_created).format('MMM') %></span>
+                  </div>
+
+                  <div class="posted-by">
+                    <img class="post-author-picture pull-left" src="<%= posted_by.picture ? posted_by.picture : '{% static 'cmsplugin_socialschools/css/img/unknown.png' %}' %>">
+                  </div>
+                </div>
+
+                <% if (event){ %>
+                <div class="tab-icon event "></div>
+                <% } %>
+
+                  <div class="content">
+                    <div class="postedin">
+                      Gepost in: <span><%= _community_name %></span>
+                    </div>
+                    <ul class="tools"></ul>
+                    <div class="item-heading">
+                      <div class="item-title">
+                      <h1 data-skip="true"><%= title %></h1>
+                      <p><% print(posted_by.first_name + ' ' + posted_by.last_name) %></p>
+                    </div>
+                  </div>
+
+                    <% if (event){ %>
+                    <p>
+                    Locatie: <%= event.location %> <br>
+                    Aanvang: <span class="date"><%= moment(event.start_date).format('LL H:mm') %></span><br>
+                    Geplande eindtijd <span class="date"><%= moment(event.end_date).format('LL H:mm') %></span><br>
+                    </p>
+                    <% } %>
+
+                    <p data-meaningful="true">
+                      <%= description %>
+                    </p>
+                    <div class="news-photos-container"></div>
+                  </div>
+
+                  <div class="post-photos-container gallery clearfix" data-toggle="modal-gallery" data-target="#modal-gallery"></div>
+                  <div class="post-document-container"></div>
+                  <div class="post-videos-container"></div>
+                  <div class="clear"></div>
+                  <br>
+                  <div class="clear"></div>
+                </div>
+              </aside>
+            </div>
+         </div>
+
 </aside>

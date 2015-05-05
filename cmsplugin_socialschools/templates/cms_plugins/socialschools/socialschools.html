@@ -1,6 +1,7 @@
 {% load staticfiles %}
 {% load sekizai_tags %}
 {% load i18n %}
+{% load compress %}
 {# Separate addtoblocks used so all static stuff only gets rendered once #}
 {% addtoblock 'js' %}
 <script src="{% static 'cmsplugin_socialschools/js/socialschools.js' %}"></script>
@@ -31,6 +32,9 @@
 </script>
 <script id="news-thumb-template" type="text/x-handlebars-template">
     {% include "cms_plugins/socialschools/newsthumb.html" %}
+</script>
+<script id="news-photo-template" type="text/x-handlebars-template">
+    {% include "cms_plugins/socialschools/newsphoto.html" %}
 </script>
 <script src="{% static 'cmsplugin_socialschools/js/socialschools_cmsplugin.js' %}"></script>
 <script type="text/javascript">
