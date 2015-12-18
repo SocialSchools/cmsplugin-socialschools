@@ -65,26 +65,19 @@ function renderNewsWithThumb(selector, posts) {
     });
   });
   $(function () {
-      if (posts.nextUrl) {
-        $(selector).find('a.css-posts-next-page').show();
-      } else {
-        $(selector).find('a.css-posts-next-page').hide();
-      }
-
-      if (posts.prevUrl) {
-        $(selector).find('a.css-posts-prev-page').show();
-      } else {
-        $(selector).find('a.css-posts-prev-page').hide();
-      }
-
-      // fix pagination
-      $('a.css-posts-next-page').on('click', function (e) {
-        e.preventDefault();
-        posts.getNextPage(function (posts) {
-          renderNewsWithThumb(selector, posts);
-        });
+    if (posts.nextUrl) {
+      $(selector).find('a.css-posts-next-page').show();
+    } else {
+      $(selector).find('a.css-posts-next-page').hide();
+    }
+    // fix pagination
+    $('a.css-posts-next-page').on('click', function (e) {
+      e.preventDefault();
+      posts.getNextPage(function (posts) {
+        renderNewsWithThumb(selector, posts);
       });
     });
+  });
   $(".inline").colorbox({inline:true, width:"80%"});
 }
 
@@ -129,50 +122,50 @@ function renderPublicPhotos(selector, photos) {
 function renderPosts(selector, posts) {
   //$(selector).find('.css-posts-content').empty();
   _.each(posts.objects, function (post) {
-      var descriptionUrlify = urlify(post.description);
-      post.description = descriptionUrlify;
-      var postHtml = postTemplate(post),
-          $post = $(document.createElement('div'));
-      $post.html(postHtml);
-      $(selector).find('.css-posts-content').append($post);
+    var descriptionUrlify = urlify(post.description);
+    post.description = descriptionUrlify;
+    var postHtml = postTemplate(post),
+        $post = $(document.createElement('div'));
+    $post.html(postHtml);
+    $(selector).find('.css-posts-content').append($post);
 
-      post.getDocuments(function (documents) {
-        renderDocuments($post, documents);
-      });
-
-      post.getPhotos(function (photos) {
-          renderPhotos($post, photos);
-      });
-
-      if (post.videos !== '') {
-        renderVideos($post, post.getVideos());
-      }
+    post.getDocuments(function (documents) {
+      renderDocuments($post, documents);
     });
-    $(function () {
-      if (posts.nextUrl) {
-        $(selector).find('a.css-posts-next-page').show();
-      } else {
-        $(selector).find('a.css-posts-next-page').hide();
-      }
 
-      if (posts.prevUrl) {
-        $(selector).find('a.css-posts-prev-page').show();
-      } else {
-        $(selector).find('a.css-posts-prev-page').hide();
-      }
+    post.getPhotos(function (photos) {
+        renderPhotos($post, photos);
+    });
 
-      // fix pagination
-      $('a.css-posts-next-page').on('click', function (e) {
-        e.preventDefault();
-        posts.getNextPage(function (posts) {
-          renderPosts(selector, posts);
-        });
-      });
-      $('a.css-posts-prev-page').on('click', function (e) {
-        e.preventDefault();
-        posts.getPreviousPage(function (posts) {
-          renderPosts(selector, posts);
-        });
+    if (post.videos !== '') {
+      renderVideos($post, post.getVideos());
+    }
+  });
+  $(function () {
+    if (posts.nextUrl) {
+      $(selector).find('a.css-posts-next-page').show();
+    } else {
+      $(selector).find('a.css-posts-next-page').hide();
+    }
+
+    if (posts.prevUrl) {
+      $(selector).find('a.css-posts-prev-page').show();
+    } else {
+      $(selector).find('a.css-posts-prev-page').hide();
+    }
+
+    // fix pagination
+    $('a.css-posts-next-page').on('click', function (e) {
+      e.preventDefault();
+      posts.getNextPage(function (posts) {
+        renderPosts(selector, posts);
       });
     });
+    $('a.css-posts-prev-page').on('click', function (e) {
+      e.preventDefault();
+      posts.getPreviousPage(function (posts) {
+        renderPosts(selector, posts);
+      });
+    });
+  });
 }
