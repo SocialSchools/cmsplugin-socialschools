@@ -64,6 +64,27 @@ function renderNewsWithThumb(selector, posts) {
       renderNewsPhotos($post, photos);
     });
   });
+  $(function () {
+      if (posts.nextUrl) {
+        $(selector).find('a.css-posts-next-page').show();
+      } else {
+        $(selector).find('a.css-posts-next-page').hide();
+      }
+
+      if (posts.prevUrl) {
+        $(selector).find('a.css-posts-prev-page').show();
+      } else {
+        $(selector).find('a.css-posts-prev-page').hide();
+      }
+
+      // fix pagination
+      $('a.css-posts-next-page').on('click', function (e) {
+        e.preventDefault();
+        posts.getNextPage(function (posts) {
+          renderNewsWithThumb(selector, posts);
+        });
+      });
+    });
   $(".inline").colorbox({inline:true, width:"80%"});
 }
 
