@@ -34,7 +34,7 @@
 
         this.getFromUrl = function(url, options, callback) {
           that.ajax = $.ajax({
-            dataType: 'jsonp',
+            dataType: 'json',
             url: url,
             data: options,
             success: function (data) {
