@@ -6,11 +6,11 @@
     <div class="post-labels">
         <% if (event){ %>
             <div class="post-label-type post-color-event">
-                <icon class="icon-calendar icon-white"></icon>
+                <icon class="glyphicon glyphicon-calendar"></icon>
             </div>
         <% } else { %>
             <div class="post-label-type post-color-comment">
-                <icon class="icon-comment icon-white"></icon>
+                <icon class="glyphicon glyphicon-comment"></icon>
             </div>
         <% } %>
     </div>
@@ -50,7 +50,7 @@
                         </div>
                     </div>
                     <div class="event-details">
-                    <p class="event-location meta-info"><icon class="icon-map-marker"></icon> <%= event.location %> </p>
+                    <p class="event-location meta-info"><icon class="glyphicon glyphicon-map-marker"></icon> <%= event.location %> </p>
                     <p class="event-multiday-time meta-info"><span class="meta-info">{% trans 'Starts' %}</span> &nbsp;<strong><%= moment(event.start_date).format('LL H:mm') %></strong></p>
                     <p class="event-multiday-time meta-info"><span class="meta-info">{% trans 'Ends' %}</span> &nbsp;<strong><%= moment(event.end_date).format('LL H:mm') %></strong></p>
                     </div>
