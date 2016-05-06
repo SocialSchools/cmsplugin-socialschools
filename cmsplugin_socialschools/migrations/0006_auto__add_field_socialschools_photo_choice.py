@@ -9,14 +9,14 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         # Adding field 'SocialSchools.photo_choice'
-        db.add_column(u'cmsplugin_socialschools_socialschools', 'photo_choice',
+        db.add_column(u'cmsplugin_socialschools', 'photo_choice',
                       self.gf('django.db.models.fields.IntegerField')(default=0),
                       keep_default=False)
 
 
     def backwards(self, orm):
         # Deleting field 'SocialSchools.photo_choice'
-        db.delete_column(u'cmsplugin_socialschools_socialschools', 'photo_choice')
+        db.delete_column(u'cmsplugin_socialschools', 'photo_choice')
 
 
     models = {
