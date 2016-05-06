@@ -6,6 +6,7 @@ var postTemplate = _.template($('#post-template').html());
 var photoTemplate = _.template($('#photo-template').html());
 var newsTemplate = _.template($('#news-template').html());
 var pubPhotoTemplate = _.template($('#pub-photo-template').html());
+var pubPhotoGridTemplate = _.template($('#pub-photo-grid-template').html());
 var newsThumbTemplate = _.template($('#news-thumb-template').html());
 var newsPhotoTemplate = _.template($('#news-photo-template').html());
 
@@ -49,7 +50,7 @@ function renderNewsPhotos($post, photos) {
 
 
 function renderNewsWithThumb(selector, posts) {
-  // add the new compact newsfeed with thumbnails 
+  // add the new compact newsfeed with thumbnails
   // photos
   $(selector).find('.css-posts-content').empty();
   _.each(posts.objects, function (post) {
@@ -118,6 +119,14 @@ function renderPublicPhotos(selector, photos) {
     });
   });
 }
+
+function renderPublicPhotosInGrid(selector, photos) {
+  _.each(photos.objects,function (photo) {
+    var photoHTML = pubPhotoGridTemplate(photo);
+    $(selector).find('.content-pub-photo').append(photoHTML);
+  });
+}
+
 
 function renderPosts(selector, posts) {
   //$(selector).find('.css-posts-content').empty();
