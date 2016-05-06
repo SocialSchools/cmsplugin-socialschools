@@ -1,14 +1,11 @@
 {% load staticfiles %}
 {% load sekizai_tags %}
 {% load i18n %}
-{% load compress %}
 {# Separate addtoblocks used so all static stuff only gets rendered once #}
 {% addtoblock 'js' %}
 <script src="{% static 'cmsplugin_socialschools/js/socialschools.js' %}"></script>
 <script src="{% static 'cmsplugin_socialschools/js/lib/underscore-min.js' %}"></script>
 <script src="{% static 'cmsplugin_socialschools/js/lib/moment+langs.min.js' %}"></script>
-<script src="{% static 'cmsplugin_socialschools/js/lib/load-image.min.js' %}"></script>
-<script src="{% static 'cmsplugin_socialschools/js/lib/bootstrap-image-gallery.js' %}"></script>
 <script id="post-template" type="text/x-handlebars-template">
     {% include "cms_plugins/socialschools/post.html" %}
 </script>
@@ -29,6 +26,9 @@
 </script>
 <script id="pub-photo-template" type="text/x-handlebars-template">
     {% include "cms_plugins/socialschools/pubphoto.html" %}
+</script>
+<script id="pub-photo-grid-template" type="text/x-handlebars-template">
+    {% include "cms_plugins/socialschools/pubphotogrid.html" %}
 </script>
 <script id="news-thumb-template" type="text/x-handlebars-template">
     {% include "cms_plugins/socialschools/newsthumb.html" %}
@@ -63,18 +63,25 @@
 {% addtoblock 'js' %}
 <script type="text/javascript">
 (function () {
-  var socialschools = new Socialschools('{{ instance.socialschools_url }}');
+  var socialschools = new Socialschools('https://app.socialschools.nl/');
   {% if instance.only_photos %}
-  var publicPhotos = socialschools.getPublicPhotos('{{ instance.community_id }}', undefined, function (photos) {
-    renderPublicPhotos('#cms-instance-{{ instance.id }}', photos);
-  });
+    {% if instance.photo_choice == instance.CAROUSEL %}
+      var publicPhotos = socialschools.getPublicPhotos('{{ instance.community_id }}', undefined, function (photos) {
+        renderPublicPhotos('#cms-instance-{{ instance.id }}', photos);
+      });
+    {% else %}
+      var publicPhotos = socialschools.getPublicPhotos('{{ instance.community_id }}', undefined, function (photos) {
+          renderPublicPhotosInGrid('#cms-instance-{{ instance.id }}', photos);
+        });
+    {% endif %}
   {% endif %}
   var posts = socialschools.getPublicPosts({{ instance.community_id }}, {
     {% if instance.only_descendants %}
-      only_descendants: true
-    {% else %}
-      only_descendants: false
-    {% endif %},
+      only_descendants: true,
+    {% endif %}
+    {% if instance.community_and_descendants %}
+      community_and_descendants: true,
+    {% endif %}
     {% if instance.number_of_items %}
       number_of_items: {{ instance.number_of_items }}
     {% endif %}
@@ -126,24 +133,40 @@
 
 
   {% if instance.only_photos %}
-  <aside class="content-block">
-    <div class="tabbar">
-      <div class="tab-icon photos"></div>
-    </div>
-    <h2>Publieke foto's</h2>
-    <div id="myCarousel" class="carousel slide">
-      <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class=""></li>
-        <li data-target="#myCarousel" data-slide-to="1" class=""></li>
-        <li data-target="#myCarousel" data-slide-to="2" class=""></li>
-      </ol>
-      <div class="carousel-inner content-pub-photo">
-      </div>
-      <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
-      <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
-  </div>
+    {% if instance.photo_choice == instance.CAROUSEL %}
 
-  </aside>
+      <aside class="content-block">
+        <div class="tabbar">
+          <div class="tab-icon photos"></div>
+        </div>
+        <h2>Publieke foto's</h2>
+        <div id="myCarousel" class="carousel slide">
+          <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class=""></li>
+            <li data-target="#myCarousel" data-slide-to="1" class=""></li>
+            <li data-target="#myCarousel" data-slide-to="2" class=""></li>
+          </ol>
+          <div class="carousel-inner content-pub-photo">
+          </div>
+          <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
+          <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
+      </div>
+
+      </aside>
+    {% endif %}
+    {% if instance.photo_choice == instance.GRID %}
+      <aside class="content-block">
+        <div class="tabbar">
+          <div class="tab-icon photos"></div>
+        </div>
+        <h2>Publieke foto's</h2>
+          <div class="row content-pub-photo">
+
+          </div>
+        </div>
+
+      </aside>
+    {% endif %}
 
   {% else %}
   <div class="css-posts-content"></div>
@@ -151,9 +174,6 @@
   {% endif %}
 
   <ul class="pager">
-      <li>
-          <a class="css-posts-prev-page" href="">{% trans 'Previous' %}</a>
-      </li>
       <li>
            <a class="css-posts-next-page" href="">{% trans 'Next' %}</a>
       </li>
