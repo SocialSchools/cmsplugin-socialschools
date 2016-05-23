@@ -104,12 +104,12 @@
 
      Socialschools.prototype.getPublicPhotos = function (communityId, options, callback) {
       var url = this.baseUrl + 'public/' + communityId + '/photo/';
-      return (new PublicPhotoCollection()).getFromUrl(url, undefined, callback);
+      return (new PublicPhotoCollection()).getFromUrl(url, options, callback);
     };
 
     Socialschools.prototype.getPublicPhotos = function (communityId, options, callback) {
       var url = this.baseUrl + 'public/' + communityId + '/photo/';
-      return (new PublicPhotoCollection()).getFromUrl(url, undefined, callback);
+      return (new PublicPhotoCollection()).getFromUrl(url, options, callback);
     };
 
     window.Socialschools = Socialschools;
