@@ -3,6 +3,7 @@
 /*global _:false */
 var documentTemplate = _.template($('#document-template').html());
 var postTemplate = _.template($('#post-template').html());
+var postWithoutEventTemplate = _.template($('#post-withoutevent-template').html());
 var photoTemplate = _.template($('#photo-template').html());
 var newsTemplate = _.template($('#news-template').html());
 var pubPhotoTemplate = _.template($('#pub-photo-template').html());
@@ -185,7 +186,7 @@ function renderPostswithoutEvent(selector, posts) {
   _.each(posts.objects, function (post) {
     var descriptionUrlify = urlify(post.description);
     post.description = descriptionUrlify;
-    var postHtml = postTemplate(post),
+    var postHtml = postWithoutEventTemplate(post),
         $post = $(document.createElement('div'));
     $post.html(postHtml);
     $(selector).find('.css-posts-content').append($post);
