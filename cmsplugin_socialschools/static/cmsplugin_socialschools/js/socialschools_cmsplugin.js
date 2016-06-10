@@ -10,7 +10,7 @@ var pubPhotoTemplate = _.template($('#pub-photo-template').html());
 var pubPhotoGridTemplate = _.template($('#pub-photo-grid-template').html());
 var newsThumbTemplate = _.template($('#news-thumb-template').html());
 var newsPhotoTemplate = _.template($('#news-photo-template').html());
-
+var newsThumbWithoutEventTemplate = _.template($('#news-thumb-template-without-event').html());
 
 function urlify(text) {
     var urlRegex = /(https?:\/\/[^\s]+)/g;
@@ -82,6 +82,40 @@ function renderNewsWithThumb(selector, posts) {
   });
   $(".inline").colorbox({inline:true, width:"80%"});
 }
+
+function renderNewsWithThumbWithoutEvent(selector, posts) {
+  // add the new compact newsfeed with thumbnails
+  // photos
+  $(selector).find('.css-posts-content').empty();
+  _.each(posts.objects, function (post) {
+    var description_urlify = urlify(post.description);
+    post.description = description_urlify;
+    var newsHtml = newsThumbWithoutEventTemplate(post),
+        $post = $(document.createElement('div'));
+    $post.html(newsHtml);
+    $(selector).find('.news-thumb').append($post);
+    // render images in the news colorbox
+    post.getPhotos(function (photos) {
+      renderNewsPhotos($post, photos);
+    });
+  });
+  $(function () {
+    if (posts.nextUrl) {
+      $(selector).find('a.css-posts-next-page').show();
+    } else {
+      $(selector).find('a.css-posts-next-page').hide();
+    }
+    // fix pagination
+    $('a.css-posts-next-page').on('click', function (e) {
+      e.preventDefault();
+      posts.getNextPage(function (posts) {
+        renderNewsWithThumbWithoutEvent(selector, posts);
+      });
+    });
+  });
+  $(".inline").colorbox({inline:true, width:"80%"});
+}
+
 
 function renderPhotos($post, photos) {
   _.each(photos.objects, function (photo) {
