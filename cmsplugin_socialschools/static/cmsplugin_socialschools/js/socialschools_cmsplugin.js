@@ -220,13 +220,13 @@ function renderPostswithoutEvent(selector, posts) {
     $('a.css-posts-next-page').on('click', function (e) {
       e.preventDefault();
       posts.getNextPage(function (posts) {
-        renderPosts(selector, posts);
+        renderPostswithoutEvent(selector, posts);
       });
     });
     $('a.css-posts-prev-page').on('click', function (e) {
       e.preventDefault();
       posts.getPreviousPage(function (posts) {
-        renderPosts(selector, posts);
+        renderPostswithoutEvent(selector, posts);
       });
     });
   });
