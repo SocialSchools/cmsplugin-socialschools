@@ -85,7 +85,8 @@ function renderNewsWithThumb(selector, posts) {
 
 function renderNewsWithThumbWithoutEvent(selector, posts) {
   // add the new compact newsfeed with thumbnails
-  // photos
+  // photos. This methods uses a different template function that
+  // omits events from rendering
   $(selector).find('.css-posts-content').empty();
   _.each(posts.objects, function (post) {
     var description_urlify = urlify(post.description);
@@ -214,7 +215,9 @@ function renderPosts(selector, posts) {
   });
 }
 
-
+// Renders posts without events when the no events option
+// is checked. This also uses another template that doesn't
+// render the event when `no event` option is checked.
 function renderPostswithoutEvent(selector, posts) {
   //$(selector).find('.css-posts-content').empty();
   _.each(posts.objects, function (post) {
