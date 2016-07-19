@@ -1,16 +1,16 @@
 {% load staticfiles %}
 {% load sekizai_tags %}
 {% load i18n %}
-{% load compress %}
 {# Separate addtoblocks used so all static stuff only gets rendered once #}
 {% addtoblock 'js' %}
 <script src="{% static 'cmsplugin_socialschools/js/socialschools.js' %}"></script>
 <script src="{% static 'cmsplugin_socialschools/js/lib/underscore-min.js' %}"></script>
 <script src="{% static 'cmsplugin_socialschools/js/lib/moment+langs.min.js' %}"></script>
-<script src="{% static 'cmsplugin_socialschools/js/lib/load-image.min.js' %}"></script>
-<script src="{% static 'cmsplugin_socialschools/js/lib/bootstrap-image-gallery.js' %}"></script>
 <script id="post-template" type="text/x-handlebars-template">
     {% include "cms_plugins/socialschools/post.html" %}
+</script>
+<script id="post-withoutevent-template" type="text/x-handlebars-template">
+    {% include "cms_plugins/socialschools/postwithoutevent.html" %}
 </script>
 <script id="news-template" type="text/x-handlebars-template">
     {% include "cms_plugins/socialschools/news.html" %}
@@ -30,8 +30,14 @@
 <script id="pub-photo-template" type="text/x-handlebars-template">
     {% include "cms_plugins/socialschools/pubphoto.html" %}
 </script>
+<script id="pub-photo-grid-template" type="text/x-handlebars-template">
+    {% include "cms_plugins/socialschools/pubphotogrid.html" %}
+</script>
 <script id="news-thumb-template" type="text/x-handlebars-template">
     {% include "cms_plugins/socialschools/newsthumb.html" %}
+</script>
+<script id="news-thumb-template-without-event" type="text/x-handlebars-template">
+    {% include "cms_plugins/socialschools/newsthumbwithoutevent.html" %}
 </script>
 <script id="news-photo-template" type="text/x-handlebars-template">
     {% include "cms_plugins/socialschools/newsphoto.html" %}
@@ -63,18 +69,25 @@
 {% addtoblock 'js' %}
 <script type="text/javascript">
 (function () {
-  var socialschools = new Socialschools('{{ instance.socialschools_url }}');
+  var socialschools = new Socialschools('https://app.socialschools.nl/');
   {% if instance.only_photos %}
-  var publicPhotos = socialschools.getPublicPhotos('{{ instance.community_id }}', undefined, function (photos) {
-    renderPublicPhotos('#cms-instance-{{ instance.id }}', photos);
-  });
-  {% endif %}
+    {% if instance.photo_choice == instance.CAROUSEL %}
+      var publicPhotos = socialschools.getPublicPhotos('{{ instance.community_id }}', undefined, function (photos) {
+        renderPublicPhotos('#cms-instance-{{ instance.id }}', photos);
+      });
+    {% else %}
+      var publicPhotos = socialschools.getPublicPhotos('{{ instance.community_id }}', undefined, function (photos) {
+          renderPublicPhotosInGrid('#cms-instance-{{ instance.id }}', photos);
+        });
+    {% endif %}
+  {% else %}
   var posts = socialschools.getPublicPosts({{ instance.community_id }}, {
     {% if instance.only_descendants %}
-      only_descendants: true
-    {% else %}
-      only_descendants: false
-    {% endif %},
+      only_descendants: true,
+    {% endif %}
+    {% if instance.community_and_descendants %}
+      community_and_descendants: true,
+    {% endif %}
     {% if instance.number_of_items %}
       number_of_items: {{ instance.number_of_items }}
     {% endif %}
@@ -83,80 +96,76 @@
     {% if instance.only_headlines %}
       renderNews('#cms-instance-{{ instance.id }}', posts);
     {% elif instance.headlines_with_thumbnails %}
-      renderNewsWithThumb('#cms-instance-{{ instance.id}}', posts);
+      {% if not instance.hide_events %}
+        renderNewsWithThumb('#cms-instance-{{ instance.id}}', posts);
+      {% else %}
+        renderNewsWithThumbWithoutEvent('#cms-instance-{{ instance.id}}', posts);
+      {% endif %}
     {% else %}
-      renderPosts('#cms-instance-{{ instance.id }}', posts);
+      {% if instance.hide_events %}
+        renderPostswithoutEvent('#cms-instance-{{ instance.id }}', posts);
+      {% else %}
+        renderPosts('#cms-instance-{{ instance.id }}', posts);
+      {% endif %}
     {% endif %}
   });
+  {% endif %}
 }());
 </script>
 {% endaddtoblock %}
 
-<div id="cms-instance-{{ instance.id }}">
+<div id="cms-instance-{{ instance.id }}" class="news-plugin">
 
 
   {% if instance.only_headlines %}
-  <div class="css-posts-content"></div>
-  <aside class="content-block">
-  <div class="tabbar">
-    <div class="date-icon news-icon magenta">
-    <div class="tab-icon organization"></div>
-    </div>
-    <div class="content content-news">
-      <h2>{% if instance.news_headlines %} {{ instance.news_headlines }} {% endif %} News</h2>
-      <ul class="news nav">
-      </ul>
-    </div>
-  </aside>
-  {% endif %}
-
-  {% if instance.headlines_with_thumbnails %}
     <div class="css-posts-content"></div>
-      <aside class="content-block">
+    <aside class="content-block">
+    <div class="tabbar">
+      <div class="content content-news">
+        <h2>{% if instance.news_headlines %} {{ instance.news_headlines }} {% endif %} News</h2>
+        <ul class="news nav">
+        </ul>
+      </div>
+    </aside>
+    <ul class="pager">
+      <li>
+        <a class="css-posts-next-page" href="#">{% trans 'More' %}</a>
+      </li>
+    </ul>
+
+  {% elif instance.headlines_with_thumbnails %}
+      <aside class="content-block newsfeed-headlines-thumbnails">
       <div class="tabbar">
-        <div class="date-icon news-icon magenta">
-        <div class="tab-icon organization"></div>
-        </div>
         <div class="content content-news">
           <ul class="news-thumb nav">
           </ul>
         </div>
       </aside>
-  {% endif %}
+      <ul class="pager">
+        <li>
+         <a class="css-posts-next-page" href="#">{% trans 'More' %}</a>
+        </li>
+      </ul>
 
-
-  {% if instance.only_photos %}
-  <aside class="content-block">
+  {% elif instance.only_photos %}
+  <aside class="content-block newsfeed-photo-carousel">
     <div class="tabbar">
       <div class="tab-icon photos"></div>
     </div>
-    <h2>Publieke foto's</h2>
-    <div id="myCarousel" class="carousel slide">
-      <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class=""></li>
-        <li data-target="#myCarousel" data-slide-to="1" class=""></li>
-        <li data-target="#myCarousel" data-slide-to="2" class=""></li>
-      </ol>
-      <div class="carousel-inner content-pub-photo">
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner content-pub-photo" role="listbox">
       </div>
-      <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
-      <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
-  </div>
-
+    </div>
   </aside>
 
   {% else %}
-  <div class="css-posts-content"></div>
+  <div class="css-posts-content newsfeed-full-posts"></div>
   <div class="css-post-cont"></div>
-  {% endif %}
-
   <ul class="pager">
-      <li>
-          <a class="css-posts-prev-page" href="">{% trans 'Previous' %}</a>
-      </li>
-      <li>
-           <a class="css-posts-next-page" href="">{% trans 'Next' %}</a>
-      </li>
+    <li>
+         <a class="css-posts-next-page" href="#">{% trans 'Next' %}</a>
+    </li>
   </ul>
+  {% endif %}
 </div>
 
