@@ -65,6 +65,12 @@ function renderNewsWithThumb(selector, posts) {
     post.getPhotos(function (photos) {
       renderNewsPhotos($post, photos);
     });
+    if (post.videos !== '') {
+      renderVideos($post, post.getVideos());
+    }
+    post.getDocuments(function (documents) {
+      renderDocuments($post, documents);
+    });
   });
   $(function () {
     if (posts.nextUrl) {
@@ -98,6 +104,12 @@ function renderNewsWithThumbWithoutEvent(selector, posts) {
     // render images in the news colorbox
     post.getPhotos(function (photos) {
       renderNewsPhotos($post, photos);
+    });
+    if (post.videos !== '') {
+      renderVideos($post, post.getVideos());
+    }
+    post.getDocuments(function (documents) {
+      renderDocuments($post, documents);
     });
   });
   $(function () {
