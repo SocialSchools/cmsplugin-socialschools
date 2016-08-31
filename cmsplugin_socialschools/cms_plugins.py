@@ -6,7 +6,7 @@ from models import SocialSchools
 
 class SocialSchoolsPlugin(CMSPluginBase):
     model = SocialSchools
-    name = _("SocialSchools Posts")
+    name = _("Social Schools Nieuws Plugin")
     render_template = "cms_plugins/socialschools/socialschools.html"
 
     def render(self, context, instance, placeholder):

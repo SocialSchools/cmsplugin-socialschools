@@ -1,5 +1,6 @@
 {% load i18n %}
 {% load staticfiles %}
+<% if (!event) {%>
 <aside class="content-block">
   <div class="content">
     <div class="row news-thumbnail">
@@ -82,3 +83,4 @@
   </div>
 
 </aside>
+<%}%>
