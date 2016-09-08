@@ -19,9 +19,10 @@ function urlify(text) {
 
 function renderDocuments($post, documents) {
     _.each(documents.objects, function (document) {
-        var documentFile = document.document_file;
-        // trim the full path to just get filename
-        document.document_file = documentFile.split('/')[4];
+        // var documentFile = document.document_file;
+        // // trim the full path to just get filename
+        // document.document_file = documentFile.split('/')[4];
+        // The filename is nicer now, So we don't need the hack.
         var documentHtml = documentTemplate(document);
         $post.find('.post-photos-container').append(documentHtml);
     });
