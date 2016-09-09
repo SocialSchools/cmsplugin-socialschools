@@ -80,7 +80,7 @@ function renderNewsWithThumb(selector, posts) {
       $(selector).find('a.css-posts-next-page').hide();
     }
     // fix pagination
-    $('a.css-posts-next-page').on('click', function (e) {
+    $('a.css-posts-next-page').one('click', function (e) {
       e.preventDefault();
       posts.getNextPage(function (posts) {
         renderNewsWithThumb(selector, posts);
@@ -120,7 +120,7 @@ function renderNewsWithThumbWithoutEvent(selector, posts) {
       $(selector).find('a.css-posts-next-page').hide();
     }
     // fix pagination
-    $('a.css-posts-next-page').on('click', function (e) {
+    $('a.css-posts-next-page').one('click', function (e) {
       e.preventDefault();
       posts.getNextPage(function (posts) {
         renderNewsWithThumbWithoutEvent(selector, posts);
@@ -213,13 +213,13 @@ function renderPosts(selector, posts) {
     }
 
     // fix pagination
-    $('a.css-posts-next-page').on('click', function (e) {
+    $('a.css-posts-next-page').one('click', function (e) {
       e.preventDefault();
       posts.getNextPage(function (posts) {
         renderPosts(selector, posts);
       });
     });
-    $('a.css-posts-prev-page').on('click', function (e) {
+    $('a.css-posts-prev-page').one('click', function (e) {
       e.preventDefault();
       posts.getPreviousPage(function (posts) {
         renderPosts(selector, posts);
@@ -267,13 +267,13 @@ function renderPostswithoutEvent(selector, posts) {
     }
 
     // fix pagination
-    $('a.css-posts-next-page').on('click', function (e) {
+    $('a.css-posts-next-page').one('click', function (e) {
       e.preventDefault();
       posts.getNextPage(function (posts) {
         renderPostswithoutEvent(selector, posts);
       });
     });
-    $('a.css-posts-prev-page').on('click', function (e) {
+    $('a.css-posts-prev-page').one('click', function (e) {
       e.preventDefault();
       posts.getPreviousPage(function (posts) {
         renderPostswithoutEvent(selector, posts);
