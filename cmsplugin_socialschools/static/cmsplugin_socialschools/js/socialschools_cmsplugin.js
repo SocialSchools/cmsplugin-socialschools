@@ -3,14 +3,12 @@
 /*global _:false */
 var documentTemplate = _.template($('#document-template').html());
 var postTemplate = _.template($('#post-template').html());
-var postWithoutEventTemplate = _.template($('#post-withoutevent-template').html());
 var photoTemplate = _.template($('#photo-template').html());
 var newsTemplate = _.template($('#news-template').html());
 var pubPhotoTemplate = _.template($('#pub-photo-template').html());
 var pubPhotoGridTemplate = _.template($('#pub-photo-grid-template').html());
 var newsThumbTemplate = _.template($('#news-thumb-template').html());
 var newsPhotoTemplate = _.template($('#news-photo-template').html());
-var newsThumbWithoutEventTemplate = _.template($('#news-thumb-template-without-event').html());
 
 function urlify(text) {
     var urlRegex = /(https?:\/\/[^\s]+)/g;
@@ -90,45 +88,6 @@ function renderNewsWithThumb(selector, posts) {
   $(".inline").colorbox({inline:true, width:"80%"});
 }
 
-function renderNewsWithThumbWithoutEvent(selector, posts) {
-  // add the new compact newsfeed with thumbnails
-  // photos. This methods uses a different template function that
-  // omits events from rendering
-  $(selector).find('.css-posts-content').empty();
-  _.each(posts.objects, function (post) {
-    var description_urlify = urlify(post.description);
-    post.description = description_urlify;
-    var newsHtml = newsThumbWithoutEventTemplate(post),
-        $post = $(document.createElement('div'));
-    $post.html(newsHtml);
-    $(selector).find('.news-thumb').append($post);
-    // render images in the news colorbox
-    post.getPhotos(function (photos) {
-      renderNewsPhotos($post, photos);
-    });
-    if (post.videos !== '') {
-      renderVideos($post, post.getVideos());
-    }
-    post.getDocuments(function (documents) {
-      renderDocuments($post, documents);
-    });
-  });
-  $(function () {
-    if (posts.nextUrl) {
-      $(selector).find('a.css-posts-next-page').show();
-    } else {
-      $(selector).find('a.css-posts-next-page').hide();
-    }
-    // fix pagination
-    $('a.css-posts-next-page').one('click', function (e) {
-      e.preventDefault();
-      posts.getNextPage(function (posts) {
-        renderNewsWithThumbWithoutEvent(selector, posts);
-      });
-    });
-  });
-  $(".inline").colorbox({inline:true, width:"80%"});
-}
 
 
 function renderPhotos($post, photos) {
@@ -228,56 +187,3 @@ function renderPosts(selector, posts) {
   });
 }
 
-// Renders posts without events when the no events option
-// is checked. This also uses another template that doesn't
-// render the event when `no event` option is checked.
-function renderPostswithoutEvent(selector, posts) {
-  //$(selector).find('.css-posts-content').empty();
-  _.each(posts.objects, function (post) {
-    var descriptionUrlify = urlify(post.description);
-    post.description = descriptionUrlify;
-    var postHtml = postWithoutEventTemplate(post),
-        $post = $(document.createElement('div'));
-    $post.html(postHtml);
-    $(selector).find('.css-posts-content').append($post);
-
-    post.getDocuments(function (documents) {
-      renderDocuments($post, documents);
-    });
-
-    post.getPhotos(function (photos) {
-        renderPhotos($post, photos);
-    });
-
-    if (post.videos !== '') {
-      renderVideos($post, post.getVideos());
-    }
-  });
-  $(function () {
-    if (posts.nextUrl) {
-      $(selector).find('a.css-posts-next-page').show();
-    } else {
-      $(selector).find('a.css-posts-next-page').hide();
-    }
-
-    if (posts.prevUrl) {
-      $(selector).find('a.css-posts-prev-page').show();
-    } else {
-      $(selector).find('a.css-posts-prev-page').hide();
-    }
-
-    // fix pagination
-    $('a.css-posts-next-page').one('click', function (e) {
-      e.preventDefault();
-      posts.getNextPage(function (posts) {
-        renderPostswithoutEvent(selector, posts);
-      });
-    });
-    $('a.css-posts-prev-page').one('click', function (e) {
-      e.preventDefault();
-      posts.getPreviousPage(function (posts) {
-        renderPostswithoutEvent(selector, posts);
-      });
-    });
-  });
-}
