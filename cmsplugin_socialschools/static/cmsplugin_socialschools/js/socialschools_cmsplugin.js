@@ -112,6 +112,11 @@ function renderVideos($post, videos) {
   });
 }
 
+function renderUploadedVideos($post, uploadedVideoUrl) {
+  var uploadedVideo = $('<video width="463" height="285" controls><source src="'+ uploadedVideoUrl + '" type="video/mp4"></video>');
+  $post.find('.post-videos-container').append(uploadedVideo);
+}
+
 function renderPublicPhotos(selector, photos) {
   $(selector).find('.css-pub-container').empty();
   _.each(photos.objects, function (photo) {
@@ -156,6 +161,10 @@ function renderPosts(selector, posts) {
 
     if (post.videos !== '') {
       renderVideos($post, post.getVideos());
+    }
+
+    if (post.uploaded_video_urls.length > 0) {
+      renderUploadedVideos($post, post.getUploadedVideos());
     }
   });
   $(function () {
