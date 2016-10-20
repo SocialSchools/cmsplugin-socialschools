@@ -67,6 +67,9 @@ function renderNewsWithThumb(selector, posts) {
     if (post.videos !== '') {
       renderVideos($post, post.getVideos());
     }
+    if (post.uploaded_video_urls.length > 0) {
+      renderUploadedVideos($post, post.getUploadedVideos());
+    }
     post.getDocuments(function (documents) {
       renderDocuments($post, documents);
     });
