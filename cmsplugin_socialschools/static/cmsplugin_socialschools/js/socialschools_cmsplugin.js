@@ -113,7 +113,7 @@ function renderVideos($post, videos) {
 }
 
 function renderUploadedVideos($post, uploadedVideoUrl) {
-  var uploadedVideo = $('<video width="463" height="285" controls><source src="'+ uploadedVideoUrl + '" type="video/mp4"></video>');
+  var uploadedVideo = $('<video style="width: 100% !important;height: auto !important;" controls><source src="'+ uploadedVideoUrl + '" type="video/mp4"></video>');
   $post.find('.post-videos-container').append(uploadedVideo);
 }
 
