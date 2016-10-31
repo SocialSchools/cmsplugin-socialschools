@@ -28,6 +28,9 @@ function renderDocuments($post, documents) {
 
 function renderNews(selector, posts) {
   $(selector).find('.css-posts-content').empty();
+  if (!posts.objects) {
+    $(selector).find('.css-posts-content').append('<h3>Er zijn geen recente nieuwsberichten om weer te geven.</h3>');
+  }
   _.each(posts.objects, function (post) {
     var newsHtml = newsTemplate(post),
         $post = $(document.createElement('div'));
@@ -53,6 +56,9 @@ function renderNewsWithThumb(selector, posts) {
   // add the new compact newsfeed with thumbnails
   // photos
   $(selector).find('.css-posts-content').empty();
+  if (!posts.objects) {
+    $(selector).find('.css-posts-content').append('<h3>Er zijn geen recente nieuwsberichten om weer te geven.</h3>');
+  }
   _.each(posts.objects, function (post) {
     var description_urlify = urlify(post.description);
     post.description = description_urlify;
@@ -146,6 +152,9 @@ function renderPublicPhotosInGrid(selector, photos) {
 
 function renderPosts(selector, posts) {
   //$(selector).find('.css-posts-content').empty();
+  if (!posts.objects) {
+    $(selector).find('.css-posts-content').append('<h3>Er zijn geen recente nieuwsberichten om weer te geven.</h3>');
+  }
   _.each(posts.objects, function (post) {
     var descriptionUrlify = urlify(post.description);
     post.description = descriptionUrlify;
