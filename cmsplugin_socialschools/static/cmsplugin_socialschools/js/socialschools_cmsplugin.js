@@ -29,7 +29,7 @@ function renderDocuments($post, documents) {
 function renderNews(selector, posts) {
   $(selector).find('.css-posts-content').empty();
   if (posts.objects.length === 0) {
-    $(selector).find('.news').append('<h3>Er zijn geen recente nieuwsberichten om weer te geven.</h3>');
+    $(selector).find('.news').append('<h4>Er zijn geen recente nieuwsberichten.</h4>');
   }
   _.each(posts.objects, function (post) {
     var newsHtml = newsTemplate(post),
@@ -57,7 +57,7 @@ function renderNewsWithThumb(selector, posts) {
   // photos
   $(selector).find('.news-thumb').empty();
   if (posts.objects.length === 0) {
-    $(selector).find('.news-thumb').append('<h3>Er zijn geen recente nieuwsberichten om weer te geven.</h3>');
+    $(selector).find('.news-thumb').append('<h4>Er zijn geen recente nieuwsberichten.</h4>');
   }
   _.each(posts.objects, function (post) {
     var description_urlify = urlify(post.description);
@@ -153,7 +153,7 @@ function renderPublicPhotosInGrid(selector, photos) {
 function renderPosts(selector, posts) {
   //$(selector).find('.css-posts-content').empty();
   if (posts.objects.length === 0) {
-    $(selector).find('.css-posts-content').append('<h3>Er zijn geen recente nieuwsberichten om weer te geven.</h3>');
+    $(selector).find('.css-posts-content').append('<h4>Er zijn geen recente nieuwsberichten.</h4>');
   }
   _.each(posts.objects, function (post) {
     var descriptionUrlify = urlify(post.description);
