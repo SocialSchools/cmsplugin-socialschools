@@ -97,6 +97,10 @@
       return this.videos;
     };
 
+    Post.prototype.getUploadedVideos = function () {
+      return this.uploaded_video_urls[0];
+    }
+
     Socialschools.prototype.getPublicPosts = function (communityId, options, callback) {
       var url = this.baseUrl + 'public/' + communityId + '/post/';
       return (new PostsCollection()).getFromUrl(url, options, callback);

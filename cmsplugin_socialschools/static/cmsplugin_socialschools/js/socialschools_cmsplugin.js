@@ -67,6 +67,9 @@ function renderNewsWithThumb(selector, posts) {
     if (post.videos !== '') {
       renderVideos($post, post.getVideos());
     }
+    if (post.uploaded_video_urls.length > 0) {
+      renderUploadedVideos($post, post.getUploadedVideos());
+    }
     post.getDocuments(function (documents) {
       renderDocuments($post, documents);
     });
@@ -110,6 +113,11 @@ function renderVideos($post, videos) {
       $post.find('.post-videos-container').append(video_link);
     }
   });
+}
+
+function renderUploadedVideos($post, uploadedVideoUrl) {
+  var uploadedVideo = $('<video style="width: 100% !important;height: auto !important;" controls><source src="'+ uploadedVideoUrl + '" type="video/mp4"></video>');
+  $post.find('.post-videos-container').append(uploadedVideo);
 }
 
 function renderPublicPhotos(selector, photos) {
@@ -156,6 +164,10 @@ function renderPosts(selector, posts) {
 
     if (post.videos !== '') {
       renderVideos($post, post.getVideos());
+    }
+
+    if (post.uploaded_video_urls.length > 0) {
+      renderUploadedVideos($post, post.getUploadedVideos());
     }
   });
   $(function () {
