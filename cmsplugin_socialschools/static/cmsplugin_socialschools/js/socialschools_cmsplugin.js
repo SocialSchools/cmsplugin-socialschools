@@ -29,7 +29,7 @@ function renderDocuments($post, documents) {
 function renderNews(selector, posts) {
   $(selector).find('.css-posts-content').empty();
   if (posts.objects.length === 0) {
-    $(selector).find('.css-posts-content').append('<h3>Er zijn geen recente nieuwsberichten om weer te geven.</h3>');
+    $(selector).find('.news').append('<h3>Er zijn geen recente nieuwsberichten om weer te geven.</h3>');
   }
   _.each(posts.objects, function (post) {
     var newsHtml = newsTemplate(post),
@@ -55,9 +55,9 @@ function renderNewsPhotos($post, photos) {
 function renderNewsWithThumb(selector, posts) {
   // add the new compact newsfeed with thumbnails
   // photos
-  $(selector).find('.css-posts-content').empty();
+  $(selector).find('.news-thumb').empty();
   if (posts.objects.length === 0) {
-    $(selector).find('.css-posts-content').append('<h3>Er zijn geen recente nieuwsberichten om weer te geven.</h3>');
+    $(selector).find('.news-thumb').append('<h3>Er zijn geen recente nieuwsberichten om weer te geven.</h3>');
   }
   _.each(posts.objects, function (post) {
     var description_urlify = urlify(post.description);
