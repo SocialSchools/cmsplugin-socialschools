@@ -28,7 +28,7 @@ function renderDocuments($post, documents) {
 
 function renderNews(selector, posts) {
   $(selector).find('.css-posts-content').empty();
-  if (!posts.objects) {
+  if (posts.objects.length === 0) {
     $(selector).find('.css-posts-content').append('<h3>Er zijn geen recente nieuwsberichten om weer te geven.</h3>');
   }
   _.each(posts.objects, function (post) {
@@ -56,7 +56,7 @@ function renderNewsWithThumb(selector, posts) {
   // add the new compact newsfeed with thumbnails
   // photos
   $(selector).find('.css-posts-content').empty();
-  if (!posts.objects) {
+  if (posts.objects.length === 0) {
     $(selector).find('.css-posts-content').append('<h3>Er zijn geen recente nieuwsberichten om weer te geven.</h3>');
   }
   _.each(posts.objects, function (post) {
@@ -152,7 +152,7 @@ function renderPublicPhotosInGrid(selector, photos) {
 
 function renderPosts(selector, posts) {
   //$(selector).find('.css-posts-content').empty();
-  if (!posts.objects) {
+  if (posts.objects.length === 0) {
     $(selector).find('.css-posts-content').append('<h3>Er zijn geen recente nieuwsberichten om weer te geven.</h3>');
   }
   _.each(posts.objects, function (post) {
