@@ -103,6 +103,7 @@ function renderPhotos($post, photos) {
     var photoHtml = photoTemplate(photo);
     $post.find('.post-photos-container').append(photoHtml);
   });
+  $('.thumbnail').colorbox();
 }
 
 function renderVideos($post, videos) {
