@@ -55,7 +55,6 @@ function renderNewsPhotos($post, photos) {
 function renderNewsWithThumb(selector, posts) {
   // add the new compact newsfeed with thumbnails
   // photos
-  $(selector).find('.news-thumb').empty();
   if (posts.objects.length === 0) {
     $(selector).find('.news-thumb').append('<h4>Er zijn geen recente nieuwsberichten.</h4>');
   }
