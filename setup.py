@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '1.3.5.7'
+version = '1.3.5.8'
 
 setup(
     name='cmsplugin-socialschools',
