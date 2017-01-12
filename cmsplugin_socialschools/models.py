@@ -20,3 +20,6 @@ class SocialSchools(CMSPlugin):
     headlines_with_thumbnails = models.BooleanField(_('Only headlines and thumbnails'), help_text=_(u"This option will only show the headlines and a thumbail if there is an image or event in the post."), default=False)
     number_of_items = models.IntegerField(_('Number of items per page'), help_text=_(u"The number of items per page with a maximum of 10."), blank=True, null=True)
     hide_events = models.BooleanField(help_text=_(u"This option will hide the events from being shown in the newsfeed"), default=False)
+
+    def get_short_description(self):
+        return u"%s" % self.community_id
