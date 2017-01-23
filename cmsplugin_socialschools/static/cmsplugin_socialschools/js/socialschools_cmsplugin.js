@@ -66,18 +66,22 @@ function renderNewsWithThumb(selector, posts) {
     $post.html(newsHtml);
     $(selector).find('.news-thumb').append($post);
     // render images in the news colorbox
-    post.getPhotos(function (photos) {
-      renderNewsPhotos($post, photos);
-    });
+    if (post._photo_count !== 0) {
+      post.getPhotos(function (photos) {
+        renderNewsPhotos($post, photos);
+      });
+    }
     if (post.videos !== '') {
       renderVideos($post, post.getVideos());
     }
     if (post.uploaded_video_urls.length > 0) {
       renderUploadedVideos($post, post.getUploadedVideos());
     }
-    post.getDocuments(function (documents) {
-      renderDocuments($post, documents);
-    });
+    if (post._document_count !== 0) {
+      post.getDocuments(function (documents) {
+        renderDocuments($post, documents);
+      });
+    }
   });
   $(function () {
     if (posts.nextUrl) {
@@ -163,13 +167,17 @@ function renderPosts(selector, posts) {
     $post.html(postHtml);
     $(selector).find('.css-posts-content').append($post);
 
-    post.getDocuments(function (documents) {
-      renderDocuments($post, documents);
-    });
+    if (post._document_count !== 0) {
+      post.getDocuments(function (documents) {
+        renderDocuments($post, documents);
+      });
+    }
 
-    post.getPhotos(function (photos) {
+    if (post._photo_count !== 0) {
+      post.getPhotos(function (photos) {
         renderPhotos($post, photos);
-    });
+     });
+    }
 
     if (post.videos !== '') {
       renderVideos($post, post.getVideos());
