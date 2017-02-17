@@ -61,6 +61,7 @@ function renderNewsWithThumb(selector, posts) {
   _.each(posts.objects, function (post) {
     var description_urlify = urlify(post.description);
     post.description = description_urlify;
+    post._first_thumb_image = post.photo_list_original[0];
     var newsHtml = newsThumbTemplate(post),
         $post = $(document.createElement('div'));
     $post.html(newsHtml);
