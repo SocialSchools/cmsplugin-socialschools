@@ -95,6 +95,7 @@ function renderNewsWithThumb(selector, posts) {
     });
   });
   $(".inline").colorbox({inline:true, width:"80%"});
+  $('.thumbnail').colorbox();
 }
 
 
